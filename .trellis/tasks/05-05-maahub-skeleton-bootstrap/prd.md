@@ -20,6 +20,7 @@ Based on [.tmp/MaaHub_PRD.md](../../../.tmp/MaaHub_PRD.md), establish the reposi
 * Initialize an Astro project under `website/`.
 * Write human-facing README documentation that introduces MaaHub, explains the repository layout, and includes contributor guidance.
 * Provide bilingual README documentation with Chinese as the default root document and a separate English version.
+* Ignore the local scratch `.tmp/` directory at the repo root so bootstrap-era temporary files do not block Trellis finish-work archival.
 * Keep the implementation limited to scaffolding and documentation; do not implement content models, pages, workflows, schemas, or market features yet.
 
 ## Acceptance Criteria
@@ -29,6 +30,7 @@ Based on [.tmp/MaaHub_PRD.md](../../../.tmp/MaaHub_PRD.md), establish the reposi
 * [ ] `website/` is an initialized Astro project that can be further developed later.
 * [ ] Root `README.md` is Chinese-first and explains MaaHub positioning, current structure, bootstrap scope, and contribution guidance.
 * [ ] A separate English README version exists and stays aligned with the Chinese root README at a high level.
+* [ ] Root `.gitignore` ignores `.tmp/` so local scratch files do not appear as untracked work during archive/finish flow.
 * [ ] No concrete market functionality beyond scaffolding is introduced.
 
 ## Definition of Done
