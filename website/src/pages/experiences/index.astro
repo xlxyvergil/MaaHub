@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { ExperiencesApp } from '../../components/ExperiencesApp';
+import { getCollection } from 'astro:content';
+
+const experiences = await getCollection('experiences');
+const experiencesData = experiences.map(e => e.data);
+---
+
+<Layout title="MaaHub - AI Experiences">
+  <ExperiencesApp client:only="react" experiencesData={experiencesData} />
+</Layout>

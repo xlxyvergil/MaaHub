@@ -1,0 +1,20 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SkillDetailApp } from '../../../components/SkillDetailApp';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const skills = await getCollection('skills');
+  return skills.map((skill) => ({
+    params: { id: skill.data.id },
+    props: { skill: skill.data },
+  }));
+}
+
+const { id } = Astro.params;
+const { skill } = Astro.props;
+---
+
+<Layout title={`${skill.title} - MaaHub`}>
+  <SkillDetailApp client:only="react" skillId={id} skillData={skill} />
+</Layout>

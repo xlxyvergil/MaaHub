@@ -1,0 +1,20 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { PipelineDetailApp } from '../../../components/PipelineDetailApp';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const pipelines = await getCollection('pipelines');
+  return pipelines.map((pipeline) => ({
+    params: { id: pipeline.data.id },
+    props: { pipeline: pipeline.data },
+  }));
+}
+
+const { id } = Astro.params;
+const { pipeline } = Astro.props;
+---
+
+<Layout title={`${pipeline.title} - MaaHub`}>
+  <PipelineDetailApp client:only="react" pipelineId={id} pipelineData={pipeline} />
+</Layout>

@@ -1,0 +1,20 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { CustomDetailApp } from '../../../components/CustomDetailApp';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const customs = await getCollection('customs');
+  return customs.map((custom) => ({
+    params: { id: custom.data.id },
+    props: { custom: custom.data },
+  }));
+}
+
+const { id } = Astro.params;
+const { custom } = Astro.props;
+---
+
+<Layout title={`MaaHub - ${custom.title}`}>
+  <CustomDetailApp customId={id} customData={custom} client:only="react" />
+</Layout>

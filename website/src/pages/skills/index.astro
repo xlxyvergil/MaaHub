@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SkillsApp } from '../../components/SkillsApp';
+import { getCollection } from 'astro:content';
+
+const skills = await getCollection('skills');
+const skillsData = skills.map(s => s.data);
+---
+
+<Layout title="MaaHub - AI Skills">
+  <SkillsApp client:only="react" skillsData={skillsData} />
+</Layout>

@@ -76,7 +76,7 @@ export function Header({ lang = 'zh', toggleLang }: { lang?: 'zh' | 'en', toggle
         <div className="mr-4 flex">
           <a href="/" className="mr-6 flex items-center space-x-2">
             <span className="font-bold sm:inline-block text-xl tracking-tight">
-              <span className="text-primary">Maa</span>Hub Market
+              <span className="text-primary">Maa</span>Hub
             </span>
           </a>
           <nav className="flex items-center space-x-6 text-sm font-medium hidden md:flex">

@@ -1,0 +1,20 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { ExperienceDetailApp } from '../../../components/ExperienceDetailApp';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const experiences = await getCollection('experiences');
+  return experiences.map((experience) => ({
+    params: { id: experience.data.id },
+    props: { experience: experience.data },
+  }));
+}
+
+const { id } = Astro.params;
+const { experience } = Astro.props;
+---
+
+<Layout title={`MaaHub - ${experience.title}`}>
+  <ExperienceDetailApp experienceId={id} experienceData={experience} client:only="react" />
+</Layout>

@@ -1,0 +1,12 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { CustomsApp } from '../../components/CustomsApp';
+import { getCollection } from 'astro:content';
+
+const customs = await getCollection('customs');
+const customsData = customs.map(c => c.data);
+---
+
+<Layout title="MaaHub - AI Customs">
+  <CustomsApp client:only="react" customsData={customsData} />
+</Layout>

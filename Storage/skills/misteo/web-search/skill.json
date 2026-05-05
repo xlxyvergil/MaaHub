@@ -1,0 +1,19 @@
+{
+  "name": "web_search",
+  "description": "Searches the web using Google Search API",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The search query"
+      },
+      "num_results": {
+        "type": "integer",
+        "description": "The number of results to return (max 10)",
+        "default": 5
+      }
+    },
+    "required": ["query"]
+  }
+}

@@ -7,88 +7,206 @@ export const languages = {
 
 export const ui = {
   zh: {
-    "nav.skills": "技能 (Skills)",
-    "nav.pipelines": "流水线 (Pipelines)",
-    "nav.customs": "自定义代码 (Customs)",
-    "nav.experiences": "经验 (Experiences)",
-    "search.placeholder": "搜索资源...",
-    "hero.badge": "MaaXYZ 出品",
+    "nav.skills": "Skills",
+    "nav.pipelines": "Pipelines",
+    "nav.customs": "Customs",
+    "nav.experiences": "Experiences",
+    "hero.title": "MaaHub",
+    "hero.subtitle": "探索、分享、构建强大的 AI Agent 生态",
+    "hero.search": "搜索 Skills, Pipelines, 自定义代码...",
+    "search.placeholder": "搜索...",
+    "hero.stats.skills": "个 Skills",
+    "hero.stats.pipelines": "条 Pipelines",
+    "hero.stats.downloads": "次下载",
+    "hero.badge": "欢迎来到 MaaHub",
     "hero.title.prefix": "开放分享式",
     "hero.title.highlight": "MaaFramework",
-    "hero.title.suffix": "社区",
-    "hero.desc":
-      "发现、挑选并集成由社区驱动的 skill、pipeline、custom 与前辈经验，为您的 Maa 项目赋能！",
-    "hero.explore": "探索市场",
-    "hero.contribute": "参与贡献",
-    "hero.available": "已收录",
-    "category.skills.title": "技能 (Skills)",
+    "hero.title.suffix": "社区集市",
+    "hero.desc": "发现、挑选并集成由社区分享的 Skill、Pipeline、Custom 与经验",
+    "hero.explore": "探索集市",
+    "hero.contribute": "贡献指南",
+    "hero.available": "可用项目",
+    "category.skills.title": "Skills",
     "category.skills.desc":
-      "开箱即用的实用 Agent skill，帮助您的 AI 更好的理解 MaaFramework。",
-    "category.pipelines.title": "流水线 (Pipelines)",
+      "开箱即用的实用 Agent skills，帮助您的 AI 更好的理解MaaFrameWork。",
+    "category.pipelines.title": "Pipelines",
     "category.pipelines.desc": "常见范式、复杂场景与最佳实践。",
-    "category.customs.title": "自定义代码 (Customs)",
-    "category.customs.desc": "Python、Go 等多语言的自定义扩展代码。",
-    "category.experiences.title": "经验 (Experiences)",
-    "category.experiences.desc": "来自社区的教程、指南与最佳实践。",
-    "trending.title": "热门推荐",
-    "trending.desc": "本周最受欢迎的资源",
-    "trending.viewAll": "查看所有热门",
-    "contribute.title": "准备好贡献了吗？",
+    "category.customs.title": "Customs",
+    "category.customs.desc": "Python、Go等多语言的自定义扩展代码。",
+    "category.experiences.title": "经验",
+    "category.experiences.desc": "来自社区前辈的教程、指南与最佳实践！",
+    "trending.title": "热门项目",
+    "trending.desc": "社区中最受欢迎的 Skills、Pipelines 和 Customs。",
+    "trending.viewAll": "查看全部",
+    "contribute.title": "参与贡献",
     "contribute.desc":
-      "MaaHub 由社区驱动，与成千上万开发者分享您的 skill、pipeline、custom 和您宝贵的经验。",
-    "contribute.docs": "阅读 PR 文档",
-    "footer.built": "由 MaaXYZ 社区构建。",
-    "footer.github": "",
-    "footer.on": " ",
+      "MaaHub 由社区驱动，向千万 MaaFramework 开发者分享您的 skill、pipeline、custom 以及您宝贵的经验！",
+    "contribute.docs": "查看 PR 文档",
+    "footer.built": "由 ",
+    "footer.github": "MaaXYZ 社区",
+    "footer.on": " 构建。",
+
+    // Skills Page
+    "skills.title": "探索 Skills",
+    "skills.desc":
+      "开箱即用的实用 Agent skills，帮助您的 AI 更好的理解MaaFrameWork。",
+    "skills.search": "搜索 Skills...",
+    "skills.filter.all": "所有状态",
+    "skills.filter.stable": "稳定版 (Stable)",
+    "skills.filter.beta": "测试版 (Beta)",
+    "skills.sort.popular": "最多下载",
+    "skills.sort.newest": "最新更新",
+    "skills.empty": "没有找到符合条件的 Skills。",
+
+    // Pipelines Page
+    "pipelines.title": "探索 Pipelines",
+    "pipelines.desc": "常见范式、复杂场景与最佳实践。",
+    "pipelines.search": "搜索 Pipelines...",
+    "pipelines.filter.all": "所有状态",
+    "pipelines.filter.stable": "稳定版 (Stable)",
+    "pipelines.filter.beta": "测试版 (Beta)",
+    "pipelines.sort.popular": "最多下载",
+    "pipelines.sort.newest": "最新更新",
+    "pipelines.empty": "没有找到符合条件的 Pipelines。",
+
+    // Customs Page
+    "customs.title": "探索 Customs",
+    "customs.desc": "Python、Go等多语言的自定义扩展代码。",
+    "customs.search": "搜索 Customs...",
+    "customs.filter.all": "所有状态",
+    "customs.filter.stable": "稳定版 (Stable)",
+    "customs.filter.beta": "测试版 (Beta)",
+    "customs.sort.popular": "最多下载",
+    "customs.sort.newest": "最新更新",
+    "customs.empty": "没有找到符合条件的 Customs。",
+
+    // Experiences Page
+    "experiences.title": "探索 Experiences",
+    "experiences.desc": "来自社区前辈的教程、指南与最佳实践！",
+    "experiences.search": "搜索 Experiences...",
+    "experiences.filter.all": "所有状态",
+    "experiences.filter.stable": "稳定版 (Stable)",
+    "experiences.filter.beta": "测试版 (Beta)",
+    "experiences.sort.popular": "最多阅读",
+    "experiences.sort.newest": "最新发布",
+    "experiences.empty": "没有找到符合条件的 Experiences。",
+
+    // Detail Pages
+    "skill.install": "安装命令",
+    "skill.readme": "说明文档",
+    "skill.files": "文件列表",
+    "skill.inputs": "输入参数",
+    "skill.outputs": "输出结果",
+
+    "common.back": "返回",
+    "common.updated": "更新于",
   },
   en: {
     "nav.skills": "Skills",
     "nav.pipelines": "Pipelines",
     "nav.customs": "Customs",
     "nav.experiences": "Experiences",
-    "search.placeholder": "Search resources...",
-    "hero.badge": "By MaaXYZ",
-    "hero.title.prefix": "The Open & Shared",
+    "hero.title": "MaaHub",
+    "hero.subtitle": "Explore, share, and build a powerful AI Agent ecosystem",
+    "hero.search": "Search Skills, Pipelines, custom code...",
+    "search.placeholder": "Search...",
+    "hero.stats.skills": "Skills",
+    "hero.stats.pipelines": "Pipelines",
+    "hero.stats.downloads": "Downloads",
+    "hero.badge": "Welcome to MaaHub",
+    "hero.title.prefix": "Open Sharing",
     "hero.title.highlight": "MaaFramework",
-    "hero.title.suffix": " Community",
+    "hero.title.suffix": "Community Marketplace",
     "hero.desc":
-      "Discover, select, and integrate community-driven skills, pipelines, customs, and experiences to empower your Maa project!",
-    "hero.explore": "Explore Market",
-    "hero.contribute": "Contribute",
-    "hero.available": "Available",
+      "Discover, select, and integrate community-shared Skills, Pipelines, Customs, and experiences.",
+    "hero.explore": "Explore Marketplace",
+    "hero.contribute": "Contribution Guide",
+    "hero.available": "Available Items",
     "category.skills.title": "Skills",
     "category.skills.desc":
-      "Ready-to-use Agent skills to help your AI better understand MaaFramework.",
+      "Ready-to-use practical Agent skills that help your AI better understand MaaFramework.",
     "category.pipelines.title": "Pipelines",
     "category.pipelines.desc":
       "Common paradigms, complex scenarios, and best practices.",
     "category.customs.title": "Customs",
     "category.customs.desc":
-      "Custom extension code in Python, Go, and other languages.",
+      "Custom extension code in multiple languages such as Python and Go.",
     "category.experiences.title": "Experiences",
     "category.experiences.desc":
-      "Tutorials, guides, and best practices from the community.",
-    "trending.title": "Trending Now",
-    "trending.desc": "The most popular resources this week",
-    "trending.viewAll": "View all trending",
-    "contribute.title": "Ready to contribute?",
+      "Tutorials, guides, and best practices from experienced community members!",
+    "trending.title": "Trending Items",
+    "trending.desc":
+      "The most popular Skills, Pipelines, and Customs from the community.",
+    "trending.viewAll": "View All",
+    "contribute.title": "Join the Community",
     "contribute.desc":
-      "MaaHub is driven by the community. Share your skills, pipelines, customs, and valuable experiences with thousands of developers.",
-    "contribute.docs": "Read PR Docs",
-    "footer.built": "Built by the MaaXYZ community.",
-    "footer.github": "",
-    "footer.on": " ",
+      "MaaHub is community-driven. Share your skills, pipelines, customs, and valuable experiences with millions of MaaFramework developers!",
+    "contribute.docs": "View PR Docs",
+    "footer.built": "Built by the ",
+    "footer.github": "MaaXYZ Community",
+    "footer.on": ".",
+
+    // Skills Page
+    "skills.title": "Explore Skills",
+    "skills.desc":
+      "Ready-to-use practical Agent skills that help your AI better understand MaaFramework.",
+    "skills.search": "Search Skills...",
+    "skills.filter.all": "All Status",
+    "skills.filter.stable": "Stable",
+    "skills.filter.beta": "Beta",
+    "skills.sort.popular": "Most Popular",
+    "skills.sort.newest": "Newest",
+    "skills.empty": "No matching skills found.",
+
+    // Pipelines Page
+    "pipelines.title": "Explore Pipelines",
+    "pipelines.desc": "Common paradigms, complex scenarios, and best practices.",
+    "pipelines.search": "Search Pipelines...",
+    "pipelines.filter.all": "All Status",
+    "pipelines.filter.stable": "Stable",
+    "pipelines.filter.beta": "Beta",
+    "pipelines.sort.popular": "Most Popular",
+    "pipelines.sort.newest": "Newest",
+    "pipelines.empty": "No matching pipelines found.",
+
+    // Customs Page
+    "customs.title": "Explore Customs",
+    "customs.desc":
+      "Custom extension code in multiple languages such as Python and Go.",
+    "customs.search": "Search Customs...",
+    "customs.filter.all": "All Status",
+    "customs.filter.stable": "Stable",
+    "customs.filter.beta": "Beta",
+    "customs.sort.popular": "Most Popular",
+    "customs.sort.newest": "Newest",
+    "customs.empty": "No matching customs found.",
+
+    // Experiences Page
+    "experiences.title": "Explore Experiences",
+    "experiences.desc":
+      "Tutorials, guides, and best practices from experienced community members!",
+    "experiences.search": "Search Experiences...",
+    "experiences.filter.all": "All Status",
+    "experiences.filter.stable": "Stable",
+    "experiences.filter.beta": "Beta",
+    "experiences.sort.popular": "Most Read",
+    "experiences.sort.newest": "Newest",
+    "experiences.empty": "No matching experiences found.",
+
+    // Detail Pages
+    "skill.install": "Install Command",
+    "skill.readme": "README",
+    "skill.files": "Files",
+    "skill.inputs": "Inputs",
+    "skill.outputs": "Outputs",
+
+    "common.back": "Back",
+    "common.updated": "Updated",
   },
-} as const;
+};
 
 export function getLangFromUrl(url: URL) {
   const [, lang] = url.pathname.split("/");
-  if (lang in languages) return lang as keyof typeof languages;
+  if (lang in ui) return lang as keyof typeof ui;
   return defaultLang;
-}
-
-export function useTranslations(lang: keyof typeof ui) {
-  return function t(key: keyof (typeof ui)[typeof defaultLang]) {
-    return ui[lang][key] || ui[defaultLang][key];
-  };
 }

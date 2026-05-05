@@ -32,7 +32,7 @@ export function App() {
   const t = (key: keyof typeof ui['zh']) => ui[lang][key];
 
   if (!isClient) {
-    return null; // Avoid hydration mismatch on initial render
+    return <div className="min-h-screen" />; // Use a minimal placeholder instead of null
   }
 
   return (
