@@ -1,0 +1,18 @@
+{
+  "$schema": "../../../../website/src/content/meta-schema.json",
+  "id": "misteo/demo-experience",
+  "title": "Demo Experience",
+  "description": "A demo experience tutorial.",
+  "author": "misteo",
+  "tags": ["demo", "tutorial"],
+  "createdAt": "2026-05-05",
+  "updatedAt": "2026-05-05",
+  "version": "1.0.0",
+  "entry": "index.md",
+  "readme": "./index.md",
+  "status": "stable",
+  "type": "experience",
+  "category": "tutorial",
+  "difficulty": "beginner",
+  "estimatedTime": "5min"
+}
