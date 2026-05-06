@@ -35,6 +35,9 @@ All modules should follow these common requirements:
 - Must include a documentation file (`README.md`), containing as needed: purpose, dependencies, usage, input/output, expected effects, etc.
 - Do not submit temporary files, build artifacts, private keys, cache directories, or other files unrelated to the entry.
 - If the entry depends on external repositories, models, services, or runtime environments, this must be clearly stated in the documentation.
+- `maahub_meta.json` should follow the unified schema:
+  - Schema: [docs/schema/maahub-meta.schema.json](/D:/_Projects/maahub/docs/schema/maahub-meta.schema.json)
+  - Field guide: [docs/zh/maahub-meta.md](/D:/_Projects/maahub/docs/zh/maahub-meta.md)
 
 PR titles should be intuitive, for example:
 

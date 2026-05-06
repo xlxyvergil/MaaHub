@@ -43,9 +43,9 @@ type SkillMetaRecord = {
   createdAt: string;
   updatedAt: string;
   version?: string;
-  framework?: string;
-  entry?: string;
-  readme?: string;
+  mfwVersion?: string;
+  entry: string;
+  readme: string;
   status?: string;
   type: 'skill';
   category?: string;
