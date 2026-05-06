@@ -31,6 +31,10 @@ If you're using Codex or another agent-capable tool, additional project-scoped h
 
 Managed by Trellis. Edits outside this block are preserved; edits inside may be overwritten by a future `trellis update`.
 
+## grill-me
+
+In this project, trellis skill needs to be used with grill-me skill and needs to be loaded at the beginning.
+
 <!-- TRELLIS:END -->
 
 # 关于 MaaHub 与 MaaFramework
