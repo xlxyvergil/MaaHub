@@ -2,9 +2,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Puzzle, GitBranch, Code2, BookOpen } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 import { ui } from '../i18n/utils';
 
-export function Hero({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
+type HeroProps = {
+  lang?: 'zh' | 'en';
+  counts: {
+    skills: number;
+    pipelines: number;
+    customs: number;
+    experiences: number;
+  };
+};
+
+export function Hero({ lang = 'zh', counts }: HeroProps) {
   const t = (key: keyof typeof ui['zh']) => ui[lang][key];
   
   const categories = [
@@ -12,32 +23,32 @@ export function Hero({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
       title: t('category.skills.title'),
       description: t('category.skills.desc'),
       icon: Puzzle,
-      href: "/skills",
-      count: 124,
+      href: sitePath('/skills'),
+      count: counts.skills,
       color: "bg-blue-500/10 text-blue-500 border-blue-500/20"
     },
     {
       title: t('category.pipelines.title'),
       description: t('category.pipelines.desc'),
       icon: GitBranch,
-      href: "/pipelines",
-      count: 45,
+      href: sitePath('/pipelines'),
+      count: counts.pipelines,
       color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
     },
     {
       title: t('category.customs.title'),
       description: t('category.customs.desc'),
       icon: Code2,
-      href: "/customs",
-      count: 89,
+      href: sitePath('/customs'),
+      count: counts.customs,
       color: "bg-amber-500/10 text-amber-500 border-amber-500/20"
     },
     {
       title: t('category.experiences.title'),
       description: t('category.experiences.desc'),
       icon: BookOpen,
-      href: "/experiences",
-      count: 234,
+      href: sitePath('/experiences'),
+      count: counts.experiences,
       color: "bg-purple-500/10 text-purple-500 border-purple-500/20"
     }
   ];
@@ -86,7 +97,7 @@ export function Hero({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4"
           >
-            <a href="/skills" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-11 px-8">
+            <a href={sitePath('/skills')} className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-11 px-8">
               {t('hero.explore')}
               <ArrowRight className="ml-2 h-4 w-4" />
             </a>

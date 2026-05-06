@@ -8,9 +8,15 @@ type AppProps = {
   skillsData?: any[];
   pipelinesData?: any[];
   customsData?: any[];
+  experiencesData?: any[];
 };
 
-export function App({ skillsData = [], pipelinesData = [], customsData = [] }: AppProps) {
+export function App({
+  skillsData = [],
+  pipelinesData = [],
+  customsData = [],
+  experiencesData = [],
+}: AppProps) {
   const [lang, setLang] = useState<'zh' | 'en'>('zh');
   const [isClient, setIsClient] = useState(false);
 
@@ -46,7 +52,15 @@ export function App({ skillsData = [], pipelinesData = [], customsData = [] }: A
       <Header lang={lang} toggleLang={toggleLang} />
       
       <main className="flex-1">
-        <Hero lang={lang} />
+        <Hero
+          lang={lang}
+          counts={{
+            skills: skillsData.length,
+            pipelines: pipelinesData.length,
+            customs: customsData.length,
+            experiences: experiencesData.length,
+          }}
+        />
         <TrendingSection lang={lang} skillsData={skillsData} pipelinesData={pipelinesData} customsData={customsData} />
         
         <section className="py-20 border-t">
