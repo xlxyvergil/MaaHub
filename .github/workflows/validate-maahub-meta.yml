@@ -1,0 +1,59 @@
+name: validate-maahub-meta
+
+on:
+  pull_request:
+    paths:
+      - 'Storage/**'
+      - 'docs/schema/maahub-meta.schema.json'
+      - 'scripts/validate-maahub-meta.mjs'
+      - 'package.json'
+      - '.github/workflows/validate-maahub-meta.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-meta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Collect changed meta files
+        id: changed-meta
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            mapfile -t files < <(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" -- 'Storage/**/maahub_meta.json')
+          else
+            mapfile -t files < <(git ls-files 'Storage/**/maahub_meta.json')
+          fi
+
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          printf 'files<<EOF\n' >> "$GITHUB_OUTPUT"
+          printf '%s\n' "${files[@]}" >> "$GITHUB_OUTPUT"
+          printf 'EOF\n' >> "$GITHUB_OUTPUT"
+          echo "has_files=true" >> "$GITHUB_OUTPUT"
+
+      - name: Skip when no meta files changed
+        if: steps.changed-meta.outputs.has_files != 'true'
+        run: echo "No changed maahub_meta.json files in this PR."
+
+      - name: Validate changed meta files
+        if: steps.changed-meta.outputs.has_files == 'true'
+        shell: bash
+        run: |
+          mapfile -t files <<< "${{ steps.changed-meta.outputs.files }}"
+          node scripts/validate-maahub-meta.mjs "${files[@]}"

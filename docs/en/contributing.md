@@ -37,7 +37,8 @@ All modules should follow these common requirements:
 - If the entry depends on external repositories, models, services, or runtime environments, this must be clearly stated in the documentation.
 - `maahub_meta.json` should follow the unified schema:
   - Schema: [docs/schema/maahub-meta.schema.json](/D:/_Projects/maahub/docs/schema/maahub-meta.schema.json)
-  - Field guide: [docs/zh/maahub-meta.md](/D:/_Projects/maahub/docs/zh/maahub-meta.md)
+  - Field guide: [docs/en/maahub-meta.md](/D:/_Projects/maahub/docs/en/maahub-meta.md)
+  - Changed `maahub_meta.json` files are automatically validated in pull requests by GitHub Actions
 
 PR titles should be intuitive, for example:
 

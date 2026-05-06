@@ -38,6 +38,7 @@ Storage/
 - `maahub_meta.json` 请遵循统一 schema：
   - 结构定义：[docs/schema/maahub-meta.schema.json](/D:/_Projects/maahub/docs/schema/maahub-meta.schema.json)
   - 字段说明：[docs/zh/maahub-meta.md](/D:/_Projects/maahub/docs/zh/maahub-meta.md)
+  - PR 会通过 GitHub Actions 自动校验变更中的 `maahub_meta.json`
 
 建议 PR 标题尽量直观，例如：
 
