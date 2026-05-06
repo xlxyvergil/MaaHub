@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Header } from './Header';
-import { ArrowLeft, BookOpen, Clock, Copy, Check, Terminal, Tag } from 'lucide-react';
+import { ArrowLeft, BookOpen, Clock, Tag, FileText, List } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
-import { FileViewer, type DownloadFile } from './FileViewer';
-import { DownloadSection } from './DownloadSection';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeSlug from 'rehype-slug';
+import GithubSlugger from 'github-slugger';
+import 'highlight.js/styles/github-dark.css';
+
+type DownloadFile = {
+  path: string;
+  content: string;
+};
 
 type ExperienceDetailData = {
   id: string;
@@ -15,24 +24,96 @@ type ExperienceDetailData = {
   updatedAt?: string;
   version?: string;
   tags?: string[];
+  readme?: string;
+  chapters?: Array<{
+    title: string;
+    path: string;
+  }>;
   downloadFiles?: DownloadFile[];
 };
 
+type Heading = {
+  id: string;
+  text: string;
+  level: number;
+};
+
+function extractHeadings(markdown: string): Heading[] {
+  const slugger = new GithubSlugger();
+  const headings: Heading[] = [];
+  const headingRegex = /^(#{1,6})\s+(.+)$/gm;
+  let match;
+
+  // Clone string to avoid mutability issues with regex
+  const str = String(markdown);
+  while ((match = headingRegex.exec(str)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim().replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1'); // Basic link text extraction
+    const id = slugger.slug(text);
+    headings.push({ id, text, level });
+  }
+  return headings;
+}
+
 // In a real app, this data would come from the astro page props (fetched from getCollection)
 export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' }: { experienceId: string, experienceData: ExperienceDetailData, lang?: 'zh' | 'en' }) {
-  const [currentLang, setCurrentLang] = React.useState(lang);
-  const [isCopied1, setIsCopied1] = React.useState(false);
-  const [isCopied2, setIsCopied2] = React.useState(false);
+  const [currentLang, setCurrentLang] = useState(lang);
+  const [isClient, setIsClient] = useState(false);
+  const [activeFile, setActiveFile] = useState<string>('');
 
-  const [isClient, setIsClient] = React.useState(false);
-
-  React.useEffect(() => {
+  useEffect(() => {
     setIsClient(true);
     const savedLang = localStorage.getItem('lang');
     if (savedLang === 'en' || savedLang === 'zh') {
       setCurrentLang(savedLang);
     }
   }, []);
+
+  // Determine initial active file
+  useEffect(() => {
+    if (!experienceData.downloadFiles || experienceData.downloadFiles.length === 0) {
+      return;
+    }
+
+    const chapters = experienceData.chapters?.length
+      ? experienceData.chapters
+      : [{ title: 'README', path: experienceData.readme ? experienceData.readme.replace(/^\.\//, '') : 'index.md' }];
+
+    const defaultFile = chapters
+      .map((chapter) => chapter.path.replace(/^\.\//, ''))
+      .map((chapter) => experienceData.downloadFiles?.find((file) => file.path === chapter || file.path.endsWith(chapter)))
+      .find((file): file is DownloadFile => Boolean(file));
+
+    if (defaultFile) {
+      setActiveFile(defaultFile.path);
+    } else {
+      setActiveFile(experienceData.downloadFiles[0].path);
+    }
+  }, [experienceData.chapters, experienceData.downloadFiles, experienceData.readme]);
+
+  const orderedChapters = useMemo(() => {
+    const files = experienceData.downloadFiles ?? [];
+    const chapters = experienceData.chapters?.length
+      ? experienceData.chapters
+      : files.map((file) => ({ title: file.path.split('/').pop() ?? file.path, path: file.path }));
+
+    return chapters
+      .map((chapter) => ({
+        title: chapter.title,
+        file: files.find((file) => file.path === chapter.path.replace(/^\.\//, '') || file.path.endsWith(chapter.path.replace(/^\.\//, ''))),
+      }))
+      .filter((chapter): chapter is { title: string; file: DownloadFile } => Boolean(chapter.file));
+  }, [experienceData.chapters, experienceData.downloadFiles]);
+
+  const currentFileContent = experienceData.downloadFiles?.find(f => f.path === activeFile)?.content || '*No content found.*';
+  
+  // Extract headings from the current markdown file
+  const headings = useMemo(() => {
+    if (activeFile.endsWith('.md') || activeFile.endsWith('.mdx')) {
+      return extractHeadings(currentFileContent);
+    }
+    return [];
+  }, [currentFileContent, activeFile]);
 
   if (!isClient) return <div className="min-h-screen" />;
 
@@ -45,19 +126,16 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
 
   const t = (key: keyof typeof ui['zh']) => ui[currentLang][key as keyof typeof ui['zh']] || key;
 
-  const handleCopy1 = () => {
-    navigator.clipboard.writeText(`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`);
-    setIsCopied1(true);
-    setTimeout(() => setIsCopied1(false), 2000);
+  // Handle smooth scrolling for headings
+  const handleHeadingClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      // Update URL hash without jumping
+      window.history.pushState(null, '', `#${id}`);
+    }
   };
-
-  const handleCopy2 = () => {
-    navigator.clipboard.writeText(`cp -r MaaHub/Storage/experiences/${experienceData.author}/${experienceData.id.split('/')[1]} ./your_agent_experiences/`);
-    setIsCopied2(true);
-    setTimeout(() => setIsCopied2(false), 2000);
-  };
-
-  const packageName = experienceData.id.split('/')[1] || experienceData.id;
 
   return (
     <>
@@ -72,8 +150,8 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
               {t('common.back')}
             </a>
             
-            <div className="flex flex-col md:flex-row gap-6 md:items-start justify-between">
-              <div className="flex-1">
+            <div className="flex flex-col gap-6 md:items-start justify-between">
+              <div className="flex-1 w-full">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="h-12 w-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500">
                     <BookOpen className="h-6 w-6" />
@@ -116,59 +194,115 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
                   ))}
                 </div>
               </div>
-              
-              <div className="w-full md:w-80 flex-shrink-0 flex flex-col gap-3 mt-4 md:mt-0">
-                <div className="rounded-lg border bg-card p-4 shadow-sm">
-                  <h3 className="font-medium mb-3 flex items-center text-sm">
-                    <Terminal className="mr-2 h-4 w-4 text-muted-foreground" />
-                    {t('skill.install')}
-                  </h3>
-                  <div className="relative mb-2">
-                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
-                      <code>{`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`}</code>
-                    </pre>
-                    <button 
-                      onClick={handleCopy1}
-                      className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
-                      title="Copy clone command"
-                    >
-                      {isCopied1 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
-                    </button>
-                  </div>
-                  <div className="relative">
-                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
-                      <code>{`cp -r MaaHub/Storage/experiences/${experienceData.author}/${experienceData.id.split('/')[1]} ./your_agent_experiences/`}</code>
-                    </pre>
-                    <button 
-                      onClick={handleCopy2}
-                      className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
-                      title="Copy copy command"
-                    >
-                      {isCopied2 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Content Tabs */}
+        {/* Content Area with Sidebar Layout */}
         <div className="container mx-auto px-4 py-8 md:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="flex flex-col lg:flex-row gap-8 items-start">
             
-            {/* Main Content Area */}
-            <div className="lg:col-span-2 space-y-6">
-              <FileViewer files={experienceData.downloadFiles} emptyLabel={t('skill.files.empty')} />
+            {/* Main Content */}
+            <div className="flex-1 w-full order-2 lg:order-1 min-w-0">
+              <div className="bg-card rounded-xl border shadow-sm p-6 md:p-10">
+                {(activeFile.endsWith('.md') || activeFile.endsWith('.mdx')) ? (
+                  <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-semibold prose-headings:scroll-mt-20 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeHighlight, rehypeSlug]}
+                    >
+                      {currentFileContent}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <pre className="overflow-x-auto p-4 bg-muted/50 rounded-lg text-sm font-mono whitespace-pre-wrap">
+                    <code>{currentFileContent}</code>
+                  </pre>
+                )}
+              </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              <DownloadSection files={experienceData.downloadFiles} packageName={packageName} lang={currentLang} />
+            {/* Right Sidebar - Sticky */}
+            <div className="w-full lg:w-72 shrink-0 order-1 lg:order-2 space-y-6 lg:sticky lg:top-20">
+              
+              {/* Chapter List */}
+              {orderedChapters.length > 1 && (
+                <div className="bg-card rounded-xl border shadow-sm p-5">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-muted-foreground" />
+                    {currentLang === 'zh' ? '章节' : 'Chapters'}
+                  </h3>
+                  <div className="space-y-1 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                    {orderedChapters.map((chapter, index) => (
+                      <button
+                        key={chapter.file.path}
+                        onClick={() => setActiveFile(chapter.file.path)}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-sm rounded-md transition-colors truncate",
+                          activeFile === chapter.file.path 
+                            ? "bg-primary/10 text-primary font-medium" 
+                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                        title={chapter.title}
+                      >
+                        <span className="mr-2 text-xs text-muted-foreground">{index + 1}.</span>
+                        {chapter.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Table of Contents (Outline) */}
+              {headings.length > 0 && (
+                <div className="bg-card rounded-xl border shadow-sm p-5 hidden lg:block">
+                  <h3 className="font-semibold mb-3 flex items-center gap-2">
+                    <List className="h-4 w-4 text-muted-foreground" />
+                    {currentLang === 'zh' ? '本章大纲' : 'On This Chapter'}
+                  </h3>
+                  <nav className="max-h-[calc(100vh-20rem)] overflow-y-auto pr-2 custom-scrollbar">
+                    <ul className="space-y-2.5 text-sm">
+                      {headings.map((heading) => {
+                        // Indent based on heading level (H1 = 0, H2 = 2, H3 = 4, etc.)
+                        const paddingLeft = `${(heading.level - 1) * 1}rem`;
+                        return (
+                          <li key={`${heading.id}-${heading.level}`} style={{ paddingLeft }}>
+                            <a
+                              href={`#${heading.id}`}
+                              onClick={(e) => handleHeadingClick(e, heading.id)}
+                              className="text-muted-foreground hover:text-primary transition-colors block truncate"
+                              title={heading.text}
+                            >
+                              {heading.text}
+                            </a>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </nav>
+                </div>
+              )}
             </div>
+            
           </div>
         </div>
       </main>
+      
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: hsl(var(--muted-foreground) / 0.3);
+          border-radius: 4px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+          background-color: hsl(var(--muted-foreground) / 0.5);
+        }
+      `}</style>
     </>
   );
 }

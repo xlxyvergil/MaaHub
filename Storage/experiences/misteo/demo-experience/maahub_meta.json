@@ -10,6 +10,10 @@
   "version": "1.0.0",
   "entry": "index.md",
   "readme": "./index.md",
+  "chapters": [
+    { "title": "概览", "path": "index.md" },
+    { "title": "测试章节", "path": "test.md" }
+  ],
   "status": "stable",
   "type": "experience",
   "category": "tutorial",
