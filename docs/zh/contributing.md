@@ -35,6 +35,10 @@ Storage/
 - 必须附带说明文档（README.md），按需要包含用途、依赖、使用方式、输入输出、预期效果等内容。
 - 不要提交与条目无关的临时文件、编译产物、私有密钥、缓存目录等。
 - 如果条目依赖外部仓库、模型、服务或运行环境，必须在说明文档中写清楚。
+- `maahub_meta.json` 请遵循统一 schema：
+  - 结构定义：[docs/schema/maahub-meta.schema.json](/D:/_Projects/maahub/docs/schema/maahub-meta.schema.json)
+  - 字段说明：[docs/zh/maahub-meta.md](/D:/_Projects/maahub/docs/zh/maahub-meta.md)
+  - PR 会通过 GitHub Actions 自动校验变更中的 `maahub_meta.json`
 
 建议 PR 标题尽量直观，例如：
 
