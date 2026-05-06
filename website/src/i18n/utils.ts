@@ -36,7 +36,8 @@ export const ui = {
     "category.experiences.title": "经验",
     "category.experiences.desc": "来自社区前辈的教程、指南与最佳实践！",
     "trending.title": "热门项目",
-    "trending.desc": "社区中最受欢迎的 Skills、Pipelines 和 Customs。",
+    "trending.desc": "社区中最受欢迎的 Skills、Pipelines 和 Customs 之一。",
+    "trending.randomBadge": "随机发现",
     "trending.viewAll": "查看全部",
     "contribute.title": "参与贡献",
     "contribute.desc":
@@ -138,6 +139,7 @@ export const ui = {
     "trending.desc":
       "The most popular Skills, Pipelines, and Customs from the community.",
     "trending.viewAll": "View All",
+    "trending.randomBadge": "Discover Random",
     "contribute.title": "Join the Community",
     "contribute.desc":
       "MaaHub is community-driven. Share your skills, pipelines, customs, and valuable experiences with millions of MaaFramework developers!",
@@ -160,7 +162,8 @@ export const ui = {
 
     // Pipelines Page
     "pipelines.title": "Explore Pipelines",
-    "pipelines.desc": "Common paradigms, complex scenarios, and best practices.",
+    "pipelines.desc":
+      "Common paradigms, complex scenarios, and best practices.",
     "pipelines.search": "Search Pipelines...",
     "pipelines.filter.all": "All Status",
     "pipelines.filter.stable": "Stable",

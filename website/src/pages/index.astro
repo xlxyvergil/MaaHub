@@ -1,8 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { App } from '../components/App';
+import { getCollection } from 'astro:content';
+
+const skills = await getCollection('skills');
+const pipelines = await getCollection('pipelines');
+const customs = await getCollection('customs');
+
+const skillsData = skills.map((skill) => skill.data);
+const pipelinesData = pipelines.map((pipeline) => pipeline.data);
+const customsData = customs.map((custom) => custom.data);
 ---
 
 <Layout title="MaaHub">
-  <App client:only="react" />
+  <App client:only="react" skillsData={skillsData} pipelinesData={pipelinesData} customsData={customsData} />
 </Layout>

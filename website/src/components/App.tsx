@@ -4,7 +4,13 @@ import { Hero } from './Hero';
 import { TrendingSection } from './Trending';
 import { ui } from '../i18n/utils';
 
-export function App() {
+type AppProps = {
+  skillsData?: any[];
+  pipelinesData?: any[];
+  customsData?: any[];
+};
+
+export function App({ skillsData = [], pipelinesData = [], customsData = [] }: AppProps) {
   const [lang, setLang] = useState<'zh' | 'en'>('zh');
   const [isClient, setIsClient] = useState(false);
 
@@ -41,7 +47,7 @@ export function App() {
       
       <main className="flex-1">
         <Hero lang={lang} />
-        <TrendingSection lang={lang} />
+        <TrendingSection lang={lang} skillsData={skillsData} pipelinesData={pipelinesData} customsData={customsData} />
         
         <section className="py-20 border-t">
           <div className="container mx-auto px-4 md:px-8 text-center">

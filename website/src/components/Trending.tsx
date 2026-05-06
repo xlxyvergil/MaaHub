@@ -1,46 +1,47 @@
-import React from 'react';
-import { Star, Download, Clock } from 'lucide-react';
+import React, { useState } from 'react';
+import { Clock, Shuffle } from 'lucide-react';
 import { ui } from '../i18n/utils';
 
-const mockItems = [
-  {
-    id: "misteo/json-processor",
-    title: "JSON Processor Pro",
-    description: "Advanced JSON parsing, transformation, and validation with auto-schema detection.",
-    author: "misteo",
-    type: "skill",
-    stars: 128,
-    downloads: "4.2k",
-    updated: "2 days ago",
-    tags: ["json", "data", "utility"]
-  },
-  {
-    id: "alice/data-etl-flow",
-    title: "Data ETL Flow",
-    description: "Complete ETL pipeline for extracting data from APIs, transforming it, and loading to databases.",
-    author: "alice",
-    type: "pipeline",
-    stars: 85,
-    downloads: "1.5k",
-    updated: "1 week ago",
-    tags: ["etl", "pipeline", "database"]
-  },
-  {
-    id: "bob/python-web-scraper",
-    title: "Advanced Web Scraper",
-    description: "Custom Python code for robust web scraping with proxy rotation and dynamic JS rendering support.",
-    author: "bob",
-    type: "custom",
-    stars: 256,
-    downloads: "8.9k",
-    updated: "3 days ago",
-    tags: ["python", "scraping", "web"]
-  }
-];
+type ItemType = 'skill' | 'pipeline' | 'custom';
 
-export function TrendingSection({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
+type Item = {
+  id: string;
+  title?: string;
+  description?: string;
+  author?: string;
+  type?: ItemType;
+  tags?: string[];
+  updatedAt?: string;
+};
+
+type TrendingSectionProps = {
+  lang?: 'zh' | 'en';
+  skillsData?: Item[];
+  pipelinesData?: Item[];
+  customsData?: Item[];
+};
+
+const typeRoutes: Record<ItemType, string> = {
+  skill: 'skills',
+  pipeline: 'pipelines',
+  custom: 'customs',
+};
+
+function pickRandomItem(items: Item[], type: ItemType) {
+  if (items.length === 0) return null;
+
+  const item = items[Math.floor(Math.random() * items.length)];
+  return { ...item, type };
+}
+
+export function TrendingSection({ lang = 'zh', skillsData = [], pipelinesData = [], customsData = [] }: TrendingSectionProps) {
   const t = (key: keyof typeof ui['zh']) => ui[lang][key];
-  
+  const [items] = useState(() => [
+    pickRandomItem(skillsData, 'skill'),
+    pickRandomItem(pipelinesData, 'pipeline'),
+    pickRandomItem(customsData, 'custom'),
+  ].filter((item): item is Item & { type: ItemType } => item !== null));
+   
   return (
     <section className="py-16 bg-muted/30">
       <div className="container mx-auto px-4 md:px-8">
@@ -55,19 +56,20 @@ export function TrendingSection({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockItems.map((item) => (
-            <div key={item.id} className="flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md">
+          {items.map((item) => (
+            <a key={`${item.type}-${item.id}`} href={`/${typeRoutes[item.type]}/${item.id}`} className="flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
               <div className="p-6 flex-1">
                 <div className="flex items-start justify-between mb-4">
                   <span className="inline-flex items-center rounded-md bg-secondary px-2.5 py-0.5 text-xs font-medium uppercase tracking-wider text-secondary-foreground">
                     {item.type}
                   </span>
-                  <div className="flex gap-2 text-muted-foreground text-sm">
-                    <span className="flex items-center gap-1"><Star className="h-3.5 w-3.5" /> {item.stars}</span>
+                  <div className="flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary">
+                    <Shuffle className="h-3.5 w-3.5" />
+                    <span>{t('trending.randomBadge')}</span>
                   </div>
                 </div>
-                
-                <h3 className="font-semibold text-lg mb-2 hover:text-primary transition-colors cursor-pointer">
+                 
+                <h3 className="font-semibold text-lg mb-2 transition-colors hover:text-primary">
                   {item.title}
                 </h3>
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
@@ -75,7 +77,7 @@ export function TrendingSection({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {item.tags.map(tag => (
+                  {item.tags?.slice(0, 3).map(tag => (
                     <span key={tag} className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
                       {tag}
                     </span>
@@ -86,16 +88,16 @@ export function TrendingSection({ lang = 'zh' }: { lang?: 'zh' | 'en' }) {
               <div className="px-6 py-4 border-t bg-muted/20 flex items-center justify-between text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
-                    {item.author[0].toUpperCase()}
+                    {item.author?.charAt(0).toUpperCase() || '?'}
                   </div>
-                  <span>{item.author}</span>
+                  <span>{item.author || 'Unknown'}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="h-3.5 w-3.5" />
-                  <span>{item.updated}</span>
+                  <span>{item.updatedAt}</span>
                 </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
