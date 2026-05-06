@@ -7,10 +7,12 @@ on:
     paths:
       - 'website/**'
       - 'Storage/**'
+      - '.github/workflows/gh-website-pages.yml'
   pull_request:
     paths:
       - 'website/**'
       - 'Storage/**'
+      - '.github/workflows/gh-website-pages.yml'
   workflow_dispatch:
 
 permissions:
