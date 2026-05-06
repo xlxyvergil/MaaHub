@@ -16,7 +16,7 @@
   "type": "custom",
   "category": "utils",
   "language": "python",
-  "runtime": "python 3.12",
+  "runtime": "python 3.12.9",
   "dependencies": [],
   "externalTools": []
 }

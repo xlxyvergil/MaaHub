@@ -16,9 +16,9 @@
   "type": "custom",
   "category": "battle",
   "language": "python",
-  "runtime": "python 3.12",
+  "runtime": "python 3.12.9",
   "dependencies": [
-    "MaaFramework"
+    "maa framework sdk"
   ],
   "externalTools": []
 }
