@@ -1,0 +1,18 @@
+{
+  "name": "maa-fgo-agent",
+  "type": "custom",
+  "author": "xlxyvergil",
+  "description": "MaaFgo 自动化战斗 Agent - 基于 MaaFramework 的 FGO 游戏自动化脚本，支持 BBC 战斗系统、Chaldea 队伍导入、大地图导航等功能",
+  "version": "1.0.0",
+  "language": "python",
+  "entry": "main.py",
+  "dependencies": [
+    "MaaFramework",
+    "opencv-python",
+    "numpy",
+    "psutil"
+  ],
+  "tags": ["fgo", "automation", "battle", "navigation"],
+  "repository": "https://github.com/xlxyvergil/MaaFgo",
+  "created_at": "2026-05-06"
+}
