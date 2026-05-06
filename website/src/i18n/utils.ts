@@ -106,6 +106,16 @@ export const ui = {
     "skill.inputs": "输入参数",
     "skill.outputs": "输出结果",
 
+    "pipeline.view.files": "文件模式",
+    "pipeline.view.visual": "可视化模式",
+    "pipeline.visual.loading": "正在连接可视化编辑器...",
+    "pipeline.visual.ready": "可视化已加载",
+    "pipeline.visual.fileLabel": "当前文件",
+    "pipeline.visual.unavailable": "未找到可视化可用的 pipeline JSON 文件，暂不可使用可视化模式。",
+    "pipeline.visual.invalidJson": "存在 JSON 文件解析失败，可改用文件模式查看源码。",
+    "pipeline.visual.handshakeFailed": "可视化编辑器连接超时，请改用文件模式查看。",
+    "pipeline.visual.loadFailed": "可视化加载失败，请改用文件模式查看。",
+
     "common.back": "返回",
     "common.updated": "更新于",
   },
@@ -216,6 +226,16 @@ export const ui = {
     "skill.download.failed": "Failed to generate the ZIP package.",
     "skill.inputs": "Inputs",
     "skill.outputs": "Outputs",
+
+    "pipeline.view.files": "Files",
+    "pipeline.view.visual": "Visual",
+    "pipeline.visual.loading": "Connecting to the visual editor...",
+    "pipeline.visual.ready": "Visual editor loaded",
+    "pipeline.visual.fileLabel": "File",
+    "pipeline.visual.unavailable": "No pipeline JSON files are available for visualization, so visual mode is unavailable.",
+    "pipeline.visual.invalidJson": "Some JSON files could not be parsed. Use files mode to inspect the source.",
+    "pipeline.visual.handshakeFailed": "The visual editor connection timed out. Use files mode instead.",
+    "pipeline.visual.loadFailed": "Failed to load the visual editor. Use files mode instead.",
 
     "common.back": "Back",
     "common.updated": "Updated",
