@@ -1,38 +1,79 @@
-# BBC Battle System
+# BBC 战斗系统
 
-BBC (BBchannel) 战斗系统，通过 TCP 连接执行 FGO 自动化战斗。
+FGO 自动化战斗执行模块，基于 BBC Server TCP 接口实现事件驱动的战斗流程。
 
-## 功能
+## 核心功能
 
-- TCP 命令通道（端口 25001）和回调监听（端口 25002）
-- 支持连续出击、爬塔、幕间、自由本、主线等多种战斗类型
-- 事件驱动弹窗处理（助战排序、队伍配置等）
-- 自动重试机制（最多 2 次）
-- 游戏异常检测与自动重启
-- 心跳检查（每 30 秒）
+### 1. 战斗类型支持
+- `CONTINUOUS` (0) - 连续出击/强化本
+- `TOWER_AUTO_SEQUENCE` (1) - 自动编队爬塔（应用操作序列）
+- `TOWER_AUTO_AI` (2) - 自动编队爬塔（程序自主技能宝具）
+- `INTERLUDE` (3) - 幕间物语
+- `FREE_QUEST` (4) - 清自由本
+- `MAIN_LIKE` (5) - 类主线
+- `MAIN_STORY` (6) - 主线物语·大奥
+
+### 2. 事件驱动弹窗处理
+- **助战排序不符合**：根据配置选择继续或停止
+- **队伍配置错误**：根据配置选择继续或停止
+- **脚本停止**：检测游戏异常（闪退、模拟器崩溃）并标记重启
+- **其他提示弹窗**：自动关闭并结束战斗
+
+### 3. 自动重试机制
+- 最多重试 2 次，每次失败后重启 BBC 进程
+- 检测游戏异常时自动触发重启
+- 通过 `need_restart` 标志控制重启逻辑
+
+### 4. 心跳检查
+- 每 30 秒发送 `get_status` 命令验证 BBC 服务状态
+- 无响应时标记为错误并需要重启
+
+### 5. 参数验证
+- 从 Pipeline 节点提取：队伍配置、运行次数、苹果类型、战斗类型
+- 验证模拟器连接状态和参数匹配
+- 启动前清空消息队列，避免历史弹窗干扰
 
 ## 文件说明
 
-- `bbc_action.py` - BBC 战斗任务执行主模块
-- `bbc_connection_manager.py` - TCP 连接管理器（单例模式）
-- `bbc_start.py` - BBC 启动 Action
-- `bbc_stop.py` - BBC 停止 Action
-- `mfaalog.py` - 日志输出模块
+- `bbc_action.py` - 战斗任务执行主模块（ExecuteBbcTask Action）
+
+**注意**：以下模块已拆分为独立 customs：
+- `bbc_connection_manager.py` → [bbc-connection-manager](../bbc-connection-manager/)
+- `bbc_start.py` / `bbc_stop.py` → [bbc-process-control](../bbc-process-control/)
 
 ## 使用方式
 
 ```python
-from bbc_action import BbcAction
-
-action = BbcAction()
-result = action.run(context, node_name, node_param)
+# Pipeline 节点配置
+{
+  "执行BBC任务": {
+    "action": "execute_bbc_task",
+    "attach": {
+      "bbc_team_config": "team_config.json",
+      "run_count": 10,
+      "apple_type": "gold",
+      "battle_type": 0,
+      "support_order_mismatch": true,
+      "team_config_error": false,
+      "connect": "connect_mumu",
+      "mumu_path": "D:/MuMuPlayer/emulator/nemu/NemuPlayer.exe",
+      "mumu_index": 0,
+      "mumu_pkg": "com.bilibili.fatego",
+      "mumu_app_index": 0
+    }
+  }
+}
 ```
 
 ## 依赖
 
 - MaaFramework
-- psutil
+- bbc-connection-manager（内部依赖）
+- bbc-process-control（内部依赖）
 
 ## 注意事项
 
-需要预先配置 BBC Server 和模拟器环境。
+1. **前置条件**：需要先调用 `start_bbc` 确保 BBC 进程运行且模拟器已连接
+2. **配置文件**：`bbc_team_config` 必须是 BBchannel/settings 目录下的 JSON 文件名
+3. **弹窗回调**：内部自动设置弹窗监听线程，无需手动干预
+4. **错误输出**：失败时通过 `pipeline_override` 将错误信息显示到 GUI
