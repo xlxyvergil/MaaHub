@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Star, Clock, Download, ArrowRight, User } from 'lucide-react';
+import { Search, Filter, Star, Clock, Tag, ArrowRight, User } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
 
@@ -46,7 +46,7 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
   
   const [searchQuery, setSearchQuery] = useState("");
   const [activeStatus, setActiveStatus] = useState("all");
-  const [sortBy, setSortBy] = useState("popular");
+  const [sortBy, setSortBy] = useState("newest");
 
   // Fallback to mock data if no initialSkills provided (for dev without Astro)
   const skillsData = initialSkills.length > 0 ? initialSkills : mockSkills;
@@ -58,7 +58,6 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
     const matchesStatus = activeStatus === "all" || skill.status === activeStatus;
     return matchesSearch && matchesStatus;
   }).sort((a, b) => {
-    if (sortBy === "popular") return (b.downloads || 0) - (a.downloads || 0);
     if (sortBy === "newest") return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
     return 0;
   });
@@ -98,7 +97,6 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
             onChange={(e) => setSortBy(e.target.value)}
             className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[150px]"
           >
-            <option value="popular">{t('skills.sort.popular')}</option>
             <option value="newest">{t('skills.sort.newest')}</option>
           </select>
         </div>
@@ -135,8 +133,8 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
                     {skill.status}
                   </span>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Download className="h-3 w-3" />
-                    <span>{skill.downloads || 0}</span>
+                    <Tag className="h-3 w-3" />
+                    <span>v{skill.version || '1.0.0'}</span>
                   </div>
                 </div>
                 

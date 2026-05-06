@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Star, Clock, BookOpen, ArrowRight, User } from 'lucide-react';
+import { Search, Filter, Star, Clock, BookOpen, Tag, ArrowRight, User } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
 
@@ -24,7 +24,7 @@ export function ExperiencesList({ lang = 'zh', initialExperiences = [] }: { lang
   
   const [searchQuery, setSearchQuery] = useState("");
   const [activeStatus, setActiveStatus] = useState("all");
-  const [sortBy, setSortBy] = useState("popular");
+  const [sortBy, setSortBy] = useState("newest");
 
   // Fallback to mock data if no initialExperiences provided
   const experiencesData = initialExperiences.length > 0 ? initialExperiences : mockExperiences;
@@ -36,7 +36,6 @@ export function ExperiencesList({ lang = 'zh', initialExperiences = [] }: { lang
     const matchesStatus = activeStatus === "all" || experience.status === activeStatus;
     return matchesSearch && matchesStatus;
   }).sort((a, b) => {
-    if (sortBy === "popular") return (b.downloads || 0) - (a.downloads || 0);
     if (sortBy === "newest") return new Date(b.updatedAt || 0).getTime() - new Date(a.updatedAt || 0).getTime();
     return 0;
   });
@@ -76,7 +75,6 @@ export function ExperiencesList({ lang = 'zh', initialExperiences = [] }: { lang
             onChange={(e) => setSortBy(e.target.value)}
             className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 sm:w-[150px]"
           >
-            <option value="popular">{t('experiences.sort.popular')}</option>
             <option value="newest">{t('experiences.sort.newest')}</option>
           </select>
         </div>
@@ -113,8 +111,8 @@ export function ExperiencesList({ lang = 'zh', initialExperiences = [] }: { lang
                     {experience.status}
                   </span>
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <BookOpen className="h-3 w-3" />
-                    <span>{experience.downloads || 0}</span>
+                    <Tag className="h-3 w-3" />
+                    <span>v{experience.version || '1.0.0'}</span>
                   </div>
                 </div>
                 

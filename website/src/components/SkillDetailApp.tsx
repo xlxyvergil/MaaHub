@@ -4,12 +4,34 @@ import { ArrowLeft, ArrowRight, Download, Star, Clock, Puzzle, Copy, Check, Term
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
 import { motion } from 'framer-motion';
+import JSZip from 'jszip';
+
+type SkillDownloadFile = {
+  path: string;
+  content: string;
+};
+
+type SkillDetailData = {
+  id: string;
+  title?: string;
+  description?: string;
+  author?: string;
+  status?: string;
+  updatedAt?: string;
+  version?: string;
+  tags?: string[];
+  entry?: string;
+  downloadFiles?: SkillDownloadFile[];
+};
 
 // In a real app, this data would come from the astro page props (fetched from getCollection)
-export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: string, skillData: any, lang?: 'zh' | 'en' }) {
+export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: string, skillData: SkillDetailData, lang?: 'zh' | 'en' }) {
   const [currentLang, setCurrentLang] = React.useState(lang);
-  const [isCopied, setIsCopied] = React.useState(false);
+  const [isCopied1, setIsCopied1] = React.useState(false);
+  const [isCopied2, setIsCopied2] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState('readme');
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const [downloadError, setDownloadError] = React.useState<string | null>(null);
 
   const [isClient, setIsClient] = React.useState(false);
 
@@ -32,11 +54,50 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
 
   const t = (key: keyof typeof ui['zh']) => ui[currentLang][key];
 
-  const handleCopy = () => {
-    // In real app, might want to copy an install command or the clone URL
-    navigator.clipboard.writeText(`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1\ncp -r MaaHub/Storage/skills/${skillData.author}/${skillData.id.split('/')[1]} ./your_agent_skills/`);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+  const handleCopy1 = () => {
+    navigator.clipboard.writeText(`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`);
+    setIsCopied1(true);
+    setTimeout(() => setIsCopied1(false), 2000);
+  };
+
+  const handleCopy2 = () => {
+    navigator.clipboard.writeText(`cp -r MaaHub/Storage/skills/${skillData.author}/${skillData.id.split('/')[1]} ./your_agent_skills/`);
+    setIsCopied2(true);
+    setTimeout(() => setIsCopied2(false), 2000);
+  };
+
+  const handleDownload = async () => {
+    if (!skillData.downloadFiles?.length) {
+      setDownloadError('No skill files available for download.');
+      return;
+    }
+
+    setIsDownloading(true);
+    setDownloadError(null);
+
+    try {
+      const zip = new JSZip();
+      const skillName = skillData.id.split('/')[1] || skillData.id;
+
+      skillData.downloadFiles.forEach((file) => {
+        zip.file(`${skillName}/${file.path}`, file.content);
+      });
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${skillName}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to generate skill ZIP', error);
+      setDownloadError('Failed to generate ZIP package.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -86,10 +147,6 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
                     <Tag className="h-4 w-4" />
                     <span>v{skillData.version || '1.0.0'}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Download className="h-4 w-4" />
-                    <span>{skillData.downloads || 0}</span>
-                  </div>
                 </div>
                 
                 <div className="flex flex-wrap gap-2">
@@ -107,16 +164,28 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
                     <Terminal className="mr-2 h-4 w-4 text-muted-foreground" />
                     {t('skill.install')}
                   </h3>
-                  <div className="relative">
-                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono">
-                      <code>MaaHub install {skillData.id}</code>
+                  <div className="relative mb-2">
+                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
+                      <code>{`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`}</code>
                     </pre>
                     <button 
-                      onClick={handleCopy}
+                      onClick={handleCopy1}
                       className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
-                      title="Copy install command"
+                      title="Copy clone command"
                     >
-                      {isCopied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                      {isCopied1 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
+                      <code>{`cp -r MaaHub/Storage/skills/${skillData.author}/${skillData.id.split('/')[1]} ./your_agent_skills/`}</code>
+                    </pre>
+                    <button 
+                      onClick={handleCopy2}
+                      className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
+                      title="Copy copy command"
+                    >
+                      {isCopied2 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
                     </button>
                   </div>
                 </div>
@@ -193,41 +262,24 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
             
             {/* Sidebar */}
             <div className="space-y-6">
-              {(skillData.inputs?.length > 0 || skillData.outputs?.length > 0) && (
-                <div className="rounded-xl border bg-card shadow-sm p-5">
-                  <h3 className="font-bold mb-4">{t('skill.inputs')} & {t('skill.outputs')}</h3>
-                  
-                  {skillData.inputs?.length > 0 && (
-                    <div className="mb-4">
-                      <h4 className="text-sm font-medium text-muted-foreground mb-2 flex items-center">
-                        <ArrowRight className="h-3 w-3 mr-1 text-primary" /> Inputs
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {skillData.inputs.map((input: string) => (
-                          <span key={`in-${input}`} className="inline-flex items-center rounded border px-2 py-1 text-xs font-mono bg-muted/30">
-                            {input}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {skillData.outputs?.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-medium text-muted-foreground mb-2 flex items-center">
-                        <ArrowLeft className="h-3 w-3 mr-1 text-green-500" /> Outputs
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {skillData.outputs.map((output: string) => (
-                          <span key={`out-${output}`} className="inline-flex items-center rounded border px-2 py-1 text-xs font-mono bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20">
-                            {output}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+              <div className="rounded-xl border bg-card shadow-sm p-5">
+                <h3 className="font-bold mb-4">{t('skill.download.title')}</h3>
+                <button
+                  type="button"
+                  onClick={handleDownload}
+                  disabled={isDownloading || !skillData.downloadFiles?.length}
+                  className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
+                >
+                  <Download className="mr-2 h-4 w-4" />
+                  {isDownloading ? t('skill.download.preparing') : t('skill.download')}
+                </button>
+                <p className="text-xs text-muted-foreground mt-3">
+                  {t('skill.download.desc')}
+                </p>
+                {downloadError ? (
+                  <p className="text-xs text-red-500 mt-2">{downloadError}</p>
+                ) : null}
+              </div>
             </div>
             
           </div>

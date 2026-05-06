@@ -96,6 +96,10 @@ export const ui = {
     "skill.install": "安装命令",
     "skill.readme": "说明文档",
     "skill.files": "文件列表",
+    "skill.download.title": "下载至本地",
+    "skill.download": "下载 ZIP",
+    "skill.download.desc": "下载技能包 ZIP 文件，方便手动安装。",
+    "skill.download.preparing": "正在准备 ZIP...",
     "skill.inputs": "输入参数",
     "skill.outputs": "输出结果",
 
@@ -200,6 +204,10 @@ export const ui = {
     "skill.install": "Install Command",
     "skill.readme": "README",
     "skill.files": "Files",
+    "skill.download.title": "Download to Local",
+    "skill.download": "Download ZIP",
+    "skill.download.desc": "Download the skill package as a ZIP file for manual installation.",
+    "skill.download.preparing": "Preparing ZIP...",
     "skill.inputs": "Inputs",
     "skill.outputs": "Outputs",
 

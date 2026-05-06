@@ -8,7 +8,8 @@ import { motion } from 'framer-motion';
 // In a real app, this data would come from the astro page props (fetched from getCollection)
 export function PipelineDetailApp({ pipelineId, pipelineData, lang = 'zh' }: { pipelineId: string, pipelineData: any, lang?: 'zh' | 'en' }) {
   const [currentLang, setCurrentLang] = React.useState(lang);
-  const [isCopied, setIsCopied] = React.useState(false);
+  const [isCopied1, setIsCopied1] = React.useState(false);
+  const [isCopied2, setIsCopied2] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState('readme');
 
   const [isClient, setIsClient] = React.useState(false);
@@ -32,11 +33,16 @@ export function PipelineDetailApp({ pipelineId, pipelineData, lang = 'zh' }: { p
 
   const t = (key: keyof typeof ui['zh']) => ui[currentLang][key as keyof typeof ui['zh']] || key;
 
-  const handleCopy = () => {
-    // In real app, might want to copy an install command or the clone URL
-    navigator.clipboard.writeText(`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1\ncp -r MaaHub/Storage/pipelines/${pipelineData.author}/${pipelineData.id.split('/')[1]} ./your_agent_pipelines/`);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
+  const handleCopy1 = () => {
+    navigator.clipboard.writeText(`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`);
+    setIsCopied1(true);
+    setTimeout(() => setIsCopied1(false), 2000);
+  };
+
+  const handleCopy2 = () => {
+    navigator.clipboard.writeText(`cp -r MaaHub/Storage/pipelines/${pipelineData.author}/${pipelineData.id.split('/')[1]} ./your_agent_pipelines/`);
+    setIsCopied2(true);
+    setTimeout(() => setIsCopied2(false), 2000);
   };
 
   return (
@@ -86,10 +92,6 @@ export function PipelineDetailApp({ pipelineId, pipelineData, lang = 'zh' }: { p
                     <Tag className="h-4 w-4" />
                     <span>v{pipelineData.version || '1.0.0'}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Download className="h-4 w-4" />
-                    <span>{pipelineData.downloads || 0}</span>
-                  </div>
                 </div>
                 
                 <div className="flex flex-wrap gap-2">
@@ -107,16 +109,28 @@ export function PipelineDetailApp({ pipelineId, pipelineData, lang = 'zh' }: { p
                     <Terminal className="mr-2 h-4 w-4 text-muted-foreground" />
                     {t('skill.install')}
                   </h3>
-                  <div className="relative">
-                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono">
-                      <code>MaaHub install pipeline {pipelineData.id}</code>
+                  <div className="relative mb-2">
+                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
+                      <code>{`git clone https://github.com/MaaXYZ/MaaHub.git --depth=1`}</code>
                     </pre>
                     <button 
-                      onClick={handleCopy}
+                      onClick={handleCopy1}
                       className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
-                      title="Copy install command"
+                      title="Copy clone command"
                     >
-                      {isCopied ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                      {isCopied1 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <pre className="overflow-x-auto rounded bg-muted p-3 text-xs font-mono whitespace-pre-wrap break-all pr-10">
+                      <code>{`cp -r MaaHub/Storage/pipelines/${pipelineData.author}/${pipelineData.id.split('/')[1]} ./your_agent_pipelines/`}</code>
+                    </pre>
+                    <button 
+                      onClick={handleCopy2}
+                      className="absolute right-2 top-2 rounded bg-background p-1.5 text-muted-foreground hover:text-foreground border shadow-sm transition-colors"
+                      title="Copy copy command"
+                    >
+                      {isCopied2 ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
                     </button>
                   </div>
                 </div>
