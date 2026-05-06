@@ -1,2 +1,0 @@
-{"file":".trellis/spec/frontend/index.md","reason":"Bootstrap Astro website scaffold under website/ and keep implementation aligned with the frontend spec entrypoint."}
-{"file":".trellis/spec/guides/index.md","reason":"This task creates config and directory scaffolding, so the implementation agent should apply the shared thinking guides before changing structure."}
