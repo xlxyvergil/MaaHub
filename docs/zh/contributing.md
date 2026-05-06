@@ -1,6 +1,6 @@
 # MaaHub 贡献指南
 
-本文面向准备向 MaaHub 提交 Pull Request 的贡献者。】
+本文面向准备向 MaaHub 提交 Pull Request 的贡献者。
 
 ## 仓库组织
 
