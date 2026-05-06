@@ -18,6 +18,8 @@ A basic example:
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -87,6 +89,19 @@ A basic example:
   - keep it around 2 to 6 tags
   - prefer short terms
   - focus on the entry topic instead of stuffing generic tags
+
+- `source`: _string_
+   Source project name. Optional.
+   Used to indicate which upstream project, ecosystem project, or reference project this entry mainly comes from.
+   Examples:
+  - `M9A`
+  - `MaaFramework`
+  - `MaaHub`
+
+- `sourceGithub`: _string_
+   GitHub link of the source project. Optional.
+   A full `http` or `https` URL is recommended.
+   For example `sourceGithub: "https://github.com/MAA1999/M9A"`.
 
 - `createdAt`: _string_  
    Entry creation date. Required.  
@@ -349,6 +364,8 @@ Both should use `YYYY-MM-DD`. Avoid timestamps or natural-language dates here.
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template skill entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template", "skill"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -372,6 +389,8 @@ Both should use `YYYY-MM-DD`. Avoid timestamps or natural-language dates here.
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template pipeline entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template", "pipeline"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -394,6 +413,8 @@ Both should use `YYYY-MM-DD`. Avoid timestamps or natural-language dates here.
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template custom entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -417,6 +438,8 @@ Both should use `YYYY-MM-DD`. Avoid timestamps or natural-language dates here.
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template experience entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",

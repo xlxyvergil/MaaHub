@@ -7,6 +7,8 @@ export const commonMetaSchema = z.object({
   title: z.string(),
   description: z.string(),
   author: z.string(),
+  source: z.string().optional(),
+  sourceGithub: z.string().url().optional(),
   tags: z.array(z.string()).optional(),
   createdAt: z.string(),
   updatedAt: z.string(),

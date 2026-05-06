@@ -18,6 +18,8 @@
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -87,6 +89,19 @@
   - 数量控制在 2 到 6 个
   - 尽量使用短词
   - 聚焦条目主题，而不是堆砌宽泛标签
+
+- `source`: _string_
+   来源项目名。可选。
+   用于标明该条目主要来源于哪个上游项目、生态项目或参考项目。
+   例如：
+  - `M9A`
+  - `MaaFramework`
+  - `MaaHub`
+
+- `sourceGithub`: _string_
+   来源项目的 GitHub 链接。可选。
+   建议填写完整的 `http` 或 `https` URL。
+   例如 `sourceGithub: "https://github.com/MAA1999/M9A"`。
 
 - `createdAt`: _string_  
    条目创建日期。必选。  
@@ -353,6 +368,8 @@
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template skill entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template", "skill"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -376,6 +393,8 @@
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template pipeline entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template", "pipeline"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -398,6 +417,8 @@
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template custom entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",
@@ -421,6 +442,8 @@
   "title": "PR Template",
   "description": "A MaaHub-owned pull request template experience entry for contributors to copy and modify.",
   "author": "MaaHub",
+  "source": "MaaHub",
+  "sourceGithub": "https://github.com/MaaXYZ/MaaHub",
   "tags": ["template"],
   "createdAt": "2026-05-06",
   "updatedAt": "2026-05-06",

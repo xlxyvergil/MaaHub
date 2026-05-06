@@ -76,6 +76,25 @@ async function validateMetaFile(relativeFilePath) {
     errors.push(formatError(normalizedPath, 'field "tags" must be an array of strings'));
   }
 
+  if (meta.source !== undefined && !isNonEmptyString(meta.source)) {
+    errors.push(formatError(normalizedPath, 'field "source" must be a non-empty string when present'));
+  }
+
+  if (meta.sourceGithub !== undefined) {
+    if (!isNonEmptyString(meta.sourceGithub)) {
+      errors.push(formatError(normalizedPath, 'field "sourceGithub" must be a non-empty string when present'));
+    } else {
+      try {
+        const parsed = new URL(meta.sourceGithub);
+        if (!(parsed.protocol === 'http:' || parsed.protocol === 'https:')) {
+          errors.push(formatError(normalizedPath, 'field "sourceGithub" must be an http or https URL'));
+        }
+      } catch {
+        errors.push(formatError(normalizedPath, 'field "sourceGithub" must be a valid URL'));
+      }
+    }
+  }
+
   if (meta.createdAt !== undefined && !isDateString(meta.createdAt)) {
     errors.push(formatError(normalizedPath, 'field "createdAt" must use YYYY-MM-DD format'));
   }
