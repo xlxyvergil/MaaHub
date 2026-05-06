@@ -1,9 +1,10 @@
 import React from 'react';
+import hljs from 'highlight.js';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
 import 'highlight.js/styles/github-dark.css';
-import { FileCode } from 'lucide-react';
+import { FileCode, Check, Copy } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 export type DownloadFile = {
@@ -72,6 +73,19 @@ export function FileViewer({ files = [], emptyLabel }: FileViewerProps) {
   );
   const initialTab = orderedFiles[0]?.path ?? '';
   const [activeTab, setActiveTab] = React.useState(initialTab);
+  const codeRef = React.useRef<HTMLElement | null>(null);
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = async () => {
+    if (!activeFile?.content) return;
+    try {
+      await navigator.clipboard.writeText(activeFile.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
 
   React.useEffect(() => {
     if (!orderedFiles.some((file) => file.path === activeTab)) {
@@ -89,6 +103,15 @@ export function FileViewer({ files = [], emptyLabel }: FileViewerProps) {
 
   const activeFile = orderedFiles.find((file) => file.path === activeTab) ?? orderedFiles[0];
   const language = getLanguage(activeFile.path);
+
+  React.useEffect(() => {
+    if (isMarkdown(activeFile.path) || !codeRef.current) {
+      return;
+    }
+
+    codeRef.current.removeAttribute('data-highlighted');
+    hljs.highlightElement(codeRef.current);
+  }, [activeFile.content, activeFile.path]);
 
   return (
     <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
@@ -112,7 +135,7 @@ export function FileViewer({ files = [], emptyLabel }: FileViewerProps) {
         ))}
       </div>
 
-      <div className="p-6">
+      <div className="p-6 relative group">
         {isMarkdown(activeFile.path) ? (
           <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary prose-pre:p-0 prose-pre:bg-transparent">
             <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
@@ -120,9 +143,23 @@ export function FileViewer({ files = [], emptyLabel }: FileViewerProps) {
             </ReactMarkdown>
           </div>
         ) : (
-          <pre className="overflow-x-auto rounded-lg bg-[#0d1117] p-4 text-sm leading-relaxed text-slate-100">
-            <code className={`language-${language}`}>{activeFile.content}</code>
-          </pre>
+          <>
+            <button
+              onClick={handleCopy}
+              className={cn(
+                "absolute top-8 right-8 p-2 rounded-md bg-zinc-800/50 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-100 transition-all opacity-0 group-hover:opacity-100",
+                copied && "text-green-400 hover:text-green-400 opacity-100"
+              )}
+              title="Copy code"
+            >
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            </button>
+            <pre className="overflow-x-auto rounded-lg bg-[#0d1117] p-4 text-sm leading-relaxed text-slate-100">
+              <code ref={codeRef} className={`language-${language}`}>
+                {activeFile.content}
+              </code>
+            </pre>
+          </>
         )}
       </div>
     </div>

@@ -1,9 +1,10 @@
 import React from 'react';
 import { Header } from './Header';
-import { ArrowLeft, BookOpen, Clock, Copy, Check, Terminal, Tag, FileCode } from 'lucide-react';
+import { ArrowLeft, BookOpen, Clock, Copy, Check, Terminal, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
 import { FileViewer, type DownloadFile } from './FileViewer';
+import { DownloadSection } from './DownloadSection';
 
 type ExperienceDetailData = {
   id: string;
@@ -55,6 +56,8 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
     setIsCopied2(true);
     setTimeout(() => setIsCopied2(false), 2000);
   };
+
+  const packageName = experienceData.id.split('/')[1] || experienceData.id;
 
   return (
     <>
@@ -161,19 +164,7 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {experienceData.downloadFiles && experienceData.downloadFiles.length > 0 && (
-                <div className="rounded-xl border bg-card shadow-sm p-5">
-                  <h3 className="font-bold mb-4">{t('skill.files')}</h3>
-                  <div className="space-y-2">
-                    {experienceData.downloadFiles.map((file) => (
-                      <div key={file.path} className="flex items-center text-sm py-2 px-3 rounded-md hover:bg-muted/50 border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 flex-shrink-0 text-muted-foreground" />
-                        <span className="truncate flex-1 font-medium" title={file.path}>{file.path}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <DownloadSection files={experienceData.downloadFiles} packageName={packageName} lang={currentLang} />
             </div>
           </div>
         </div>

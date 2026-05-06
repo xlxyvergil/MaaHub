@@ -1,15 +1,10 @@
 import React from 'react';
 import { Header } from './Header';
-import { ArrowLeft, Download, Clock, Puzzle, Copy, Check, Terminal, Tag, FileCode } from 'lucide-react';
+import { ArrowLeft, Clock, Puzzle, Copy, Check, Terminal, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
-import JSZip from 'jszip';
-import { FileViewer } from './FileViewer';
-
-type SkillDownloadFile = {
-  path: string;
-  content: string;
-};
+import { FileViewer, type DownloadFile } from './FileViewer';
+import { DownloadSection } from './DownloadSection';
 
 type SkillDetailData = {
   id: string;
@@ -21,7 +16,7 @@ type SkillDetailData = {
   version?: string;
   tags?: string[];
   entry?: string;
-  downloadFiles?: SkillDownloadFile[];
+  downloadFiles?: DownloadFile[];
 };
 
 // In a real app, this data would come from the astro page props (fetched from getCollection)
@@ -29,8 +24,6 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
   const [currentLang, setCurrentLang] = React.useState(lang);
   const [isCopied1, setIsCopied1] = React.useState(false);
   const [isCopied2, setIsCopied2] = React.useState(false);
-  const [isDownloading, setIsDownloading] = React.useState(false);
-  const [downloadError, setDownloadError] = React.useState<string | null>(null);
 
   const [isClient, setIsClient] = React.useState(false);
 
@@ -65,39 +58,7 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
     setTimeout(() => setIsCopied2(false), 2000);
   };
 
-  const handleDownload = async () => {
-    if (!skillData.downloadFiles?.length) {
-      setDownloadError('No skill files available for download.');
-      return;
-    }
-
-    setIsDownloading(true);
-    setDownloadError(null);
-
-    try {
-      const zip = new JSZip();
-      const skillName = skillData.id.split('/')[1] || skillData.id;
-
-      skillData.downloadFiles.forEach((file) => {
-        zip.file(`${skillName}/${file.path}`, file.content);
-      });
-
-      const blob = await zip.generateAsync({ type: 'blob' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${skillName}.zip`;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Failed to generate skill ZIP', error);
-      setDownloadError('Failed to generate ZIP package.');
-    } finally {
-      setIsDownloading(false);
-    }
-  };
+  const packageName = skillData.id.split('/')[1] || skillData.id;
 
   return (
     <>
@@ -204,38 +165,7 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
             
             {/* Sidebar */}
             <div className="space-y-6">
-              <div className="rounded-xl border bg-card shadow-sm p-5">
-                <h3 className="font-bold mb-4">{t('skill.download.title')}</h3>
-                <button
-                  type="button"
-                  onClick={handleDownload}
-                  disabled={isDownloading || !skillData.downloadFiles?.length}
-                  className="w-full inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2"
-                >
-                  <Download className="mr-2 h-4 w-4" />
-                  {isDownloading ? t('skill.download.preparing') : t('skill.download')}
-                </button>
-                <p className="text-xs text-muted-foreground mt-3">
-                  {t('skill.download.desc')}
-                </p>
-                {downloadError ? (
-                  <p className="text-xs text-red-500 mt-2">{downloadError}</p>
-                ) : null}
-              </div>
-
-              {skillData.downloadFiles && skillData.downloadFiles.length > 0 && (
-                <div className="rounded-xl border bg-card shadow-sm p-5">
-                  <h3 className="font-bold mb-4">{t('skill.files')}</h3>
-                  <div className="space-y-2">
-                    {skillData.downloadFiles.map((file) => (
-                      <div key={file.path} className="flex items-center text-sm py-2 px-3 rounded-md hover:bg-muted/50 border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 flex-shrink-0 text-muted-foreground" />
-                        <span className="truncate flex-1 font-medium" title={file.path}>{file.path}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <DownloadSection files={skillData.downloadFiles} packageName={packageName} lang={currentLang} />
             </div>
             
           </div>

@@ -99,8 +99,10 @@ export const ui = {
     "skill.files.empty": "暂无可展示的文件。",
     "skill.download.title": "下载至本地",
     "skill.download": "下载 ZIP",
-    "skill.download.desc": "下载技能包 ZIP 文件，方便手动安装。",
+    "skill.download.desc": "下载当前模块的 ZIP 文件，方便本地使用或手动安装。",
     "skill.download.preparing": "正在准备 ZIP...",
+    "skill.download.empty": "当前没有可下载的文件。",
+    "skill.download.failed": "生成 ZIP 包失败。",
     "skill.inputs": "输入参数",
     "skill.outputs": "输出结果",
 
@@ -208,8 +210,10 @@ export const ui = {
     "skill.files.empty": "No files available to display.",
     "skill.download.title": "Download to Local",
     "skill.download": "Download ZIP",
-    "skill.download.desc": "Download the skill package as a ZIP file for manual installation.",
+    "skill.download.desc": "Download the current module as a ZIP package for local use or manual installation.",
     "skill.download.preparing": "Preparing ZIP...",
+    "skill.download.empty": "There are no files available for download.",
+    "skill.download.failed": "Failed to generate the ZIP package.",
     "skill.inputs": "Inputs",
     "skill.outputs": "Outputs",
 
