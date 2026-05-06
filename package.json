@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "dev": "cd website && astro dev",
-    "build": "cd website && astro build",
-    "preview": "cd website && astro preview",
-    "astro": "cd website && astro"
+    "dev": "cd website && yarn && astro dev",
+    "build": "cd website && yarn && astro build",
+    "preview": "cd website && yarn && astro preview",
+    "astro": "cd website && yarn && astro"
   }
 }

@@ -2,46 +2,14 @@
 import Layout from '../../../layouts/Layout.astro';
 import { SkillDetailApp } from '../../../components/SkillDetailApp';
 import { getCollection } from 'astro:content';
-import { readdir, readFile } from 'node:fs/promises';
-import path from 'node:path';
-
-type SkillDownloadFile = {
-  path: string;
-  content: string;
-};
+import { withDownloadFiles } from '../../../lib/downloadFiles';
 
 export async function getStaticPaths() {
-  const collectSkillFiles = async (dirPath: string, relativePath = ''): Promise<SkillDownloadFile[]> => {
-    const entries = await readdir(dirPath, { withFileTypes: true });
-    const files = await Promise.all(entries.map(async (entry) => {
-      const entryPath = path.join(dirPath, entry.name);
-      const entryRelativePath = relativePath ? `${relativePath}/${entry.name}` : entry.name;
-
-      if (entry.isDirectory()) {
-        return collectSkillFiles(entryPath, entryRelativePath);
-      }
-
-      const content = await readFile(entryPath, 'utf-8');
-      return [{ path: entryRelativePath, content }];
-    }));
-
-    return files.flat();
-  };
-
   const skills = await getCollection('skills');
-  return Promise.all(skills.map(async (skill) => {
-    const [author, skillSlug] = skill.data.id.split('/');
-    const skillDir = path.resolve('../Storage/skills', author, skillSlug);
-    const downloadFiles = await collectSkillFiles(skillDir);
-
+  return Promise.all(skills.map(async (skill: typeof skills[number]) => {
     return {
       params: { id: skill.data.id },
-      props: {
-        skill: {
-          ...skill.data,
-          downloadFiles,
-        },
-      },
+      props: { skill: await withDownloadFiles(skill.data, 'skills') },
     };
   }));
 }

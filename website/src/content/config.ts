@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const skills = defineCollection({
-  loader: glob({ pattern: "**/meta.json", base: "../Storage/skills" }),
+  loader: glob({ pattern: "**/maahub_meta.json", base: "../Storage/skills" }),
   schema: z.object({
     id: z.string(),
     title: z.string(),
@@ -24,17 +24,17 @@ const skills = defineCollection({
 });
 
 const pipelines = defineCollection({
-  loader: glob({ pattern: "**/meta.json", base: "../Storage/pipelines" }),
+  loader: glob({ pattern: "**/maahub_meta.json", base: "../Storage/pipelines" }),
   schema: z.any()
 });
 
 const customs = defineCollection({
-  loader: glob({ pattern: "**/meta.json", base: "../Storage/customs" }),
+  loader: glob({ pattern: "**/maahub_meta.json", base: "../Storage/customs" }),
   schema: z.any()
 });
 
 const experiences = defineCollection({
-  loader: glob({ pattern: "**/meta.json", base: "../Storage/experiences" }),
+  loader: glob({ pattern: "**/maahub_meta.json", base: "../Storage/experiences" }),
   schema: z.any()
 });
 

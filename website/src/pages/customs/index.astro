@@ -4,7 +4,7 @@ import { CustomsApp } from '../../components/CustomsApp';
 import { getCollection } from 'astro:content';
 
 const customs = await getCollection('customs');
-const customsData = customs.map(c => c.data);
+const customsData = customs.map((custom: typeof customs[number]) => custom.data);
 ---
 
 <Layout title="MaaHub - AI Customs">

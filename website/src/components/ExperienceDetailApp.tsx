@@ -1,16 +1,27 @@
 import React from 'react';
 import { Header } from './Header';
-import { ArrowLeft, BookOpen, Star, Clock, Copy, Check, Terminal, FileCode, Tag, ArrowRight } from 'lucide-react';
+import { ArrowLeft, BookOpen, Clock, Copy, Check, Terminal, Tag, FileCode } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
-import { motion } from 'framer-motion';
+import { FileViewer, type DownloadFile } from './FileViewer';
+
+type ExperienceDetailData = {
+  id: string;
+  title?: string;
+  description?: string;
+  author?: string;
+  status?: string;
+  updatedAt?: string;
+  version?: string;
+  tags?: string[];
+  downloadFiles?: DownloadFile[];
+};
 
 // In a real app, this data would come from the astro page props (fetched from getCollection)
-export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' }: { experienceId: string, experienceData: any, lang?: 'zh' | 'en' }) {
+export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' }: { experienceId: string, experienceData: ExperienceDetailData, lang?: 'zh' | 'en' }) {
   const [currentLang, setCurrentLang] = React.useState(lang);
   const [isCopied1, setIsCopied1] = React.useState(false);
   const [isCopied2, setIsCopied2] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState('readme');
 
   const [isClient, setIsClient] = React.useState(false);
 
@@ -80,9 +91,9 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
                 <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
                   <div className="flex items-center gap-2">
                     <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase">
-                      {experienceData.author.charAt(0)}
+                      {experienceData.author?.charAt(0) || '?'}
                     </div>
-                    <span className="font-medium text-foreground">{experienceData.author}</span>
+                    <span className="font-medium text-foreground">{experienceData.author || 'Unknown'}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="h-4 w-4" />
@@ -145,57 +156,24 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
             
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-                <div className="border-b bg-muted/40 px-4 flex">
-                  <button 
-                    onClick={() => setActiveTab('readme')}
-                    className={cn(
-                      "px-4 py-3 text-sm font-medium border-b-2 transition-colors",
-                      activeTab === 'readme' ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('skill.readme')}
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('files')}
-                    className={cn(
-                      "px-4 py-3 text-sm font-medium border-b-2 transition-colors",
-                      activeTab === 'files' ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('skill.files')}
-                  </button>
-                </div>
-                
-                <div className="p-6">
-                  {activeTab === 'readme' ? (
-                    <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
-                      {/* In a real Astro app, this would be the rendered markdown content passed as children or a prop */}
-                      <h1>{experienceData.title}</h1>
-                      <p>{experienceData.description}</p>
-                      <h2>Overview</h2>
-                      <p>This is a mock readme representation. In the actual implementation, the markdown file from the storage directory would be parsed and injected here using Astro's content collection rendering capabilities.</p>
-                      <pre><code>{`{
-  "name": "${experienceData.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}",
-  "log": {}
-}`}</code></pre>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <div className="flex items-center p-2 rounded-md hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">meta.json</span>
-                        <span className="ml-auto text-xs text-muted-foreground">324 B</span>
+              <FileViewer files={experienceData.downloadFiles} emptyLabel={t('skill.files.empty')} />
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {experienceData.downloadFiles && experienceData.downloadFiles.length > 0 && (
+                <div className="rounded-xl border bg-card shadow-sm p-5">
+                  <h3 className="font-bold mb-4">{t('skill.files')}</h3>
+                  <div className="space-y-2">
+                    {experienceData.downloadFiles.map((file) => (
+                      <div key={file.path} className="flex items-center text-sm py-2 px-3 rounded-md hover:bg-muted/50 border border-transparent hover:border-border transition-colors">
+                        <FileCode className="h-4 w-4 mr-3 flex-shrink-0 text-muted-foreground" />
+                        <span className="truncate flex-1 font-medium" title={file.path}>{file.path}</span>
                       </div>
-                      <div className="flex items-center p-2 rounded-md hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">README.md</span>
-                        <span className="ml-auto text-xs text-muted-foreground">2.4 KB</span>
-                      </div>
-                    </div>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

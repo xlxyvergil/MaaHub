@@ -4,7 +4,7 @@ import { PipelinesApp } from '../../components/PipelinesApp';
 import { getCollection } from 'astro:content';
 
 const pipelines = await getCollection('pipelines');
-const pipelinesData = pipelines.map(p => p.data);
+const pipelinesData = pipelines.map((pipeline: typeof pipelines[number]) => pipeline.data);
 ---
 
 <Layout title="MaaHub - AI Pipelines">

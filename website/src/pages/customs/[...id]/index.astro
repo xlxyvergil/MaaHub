@@ -2,13 +2,14 @@
 import Layout from '../../../layouts/Layout.astro';
 import { CustomDetailApp } from '../../../components/CustomDetailApp';
 import { getCollection } from 'astro:content';
+import { withDownloadFiles } from '../../../lib/downloadFiles';
 
 export async function getStaticPaths() {
   const customs = await getCollection('customs');
-  return customs.map((custom) => ({
+  return Promise.all(customs.map(async (custom: typeof customs[number]) => ({
     params: { id: custom.data.id },
-    props: { custom: custom.data },
-  }));
+    props: { custom: await withDownloadFiles(custom.data, 'customs') },
+  })));
 }
 
 const { id } = Astro.params;

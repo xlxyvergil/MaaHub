@@ -2,13 +2,14 @@
 import Layout from '../../../layouts/Layout.astro';
 import { PipelineDetailApp } from '../../../components/PipelineDetailApp';
 import { getCollection } from 'astro:content';
+import { withDownloadFiles } from '../../../lib/downloadFiles';
 
 export async function getStaticPaths() {
   const pipelines = await getCollection('pipelines');
-  return pipelines.map((pipeline) => ({
+  return Promise.all(pipelines.map(async (pipeline: typeof pipelines[number]) => ({
     params: { id: pipeline.data.id },
-    props: { pipeline: pipeline.data },
-  }));
+    props: { pipeline: await withDownloadFiles(pipeline.data, 'pipelines') },
+  })));
 }
 
 const { id } = Astro.params;

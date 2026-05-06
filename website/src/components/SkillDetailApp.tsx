@@ -1,10 +1,10 @@
 import React from 'react';
 import { Header } from './Header';
-import { ArrowLeft, ArrowRight, Download, Star, Clock, Puzzle, Copy, Check, Terminal, FileCode, Tag } from 'lucide-react';
+import { ArrowLeft, Download, Clock, Puzzle, Copy, Check, Terminal, Tag, FileCode } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
-import { motion } from 'framer-motion';
 import JSZip from 'jszip';
+import { FileViewer } from './FileViewer';
 
 type SkillDownloadFile = {
   path: string;
@@ -29,7 +29,6 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
   const [currentLang, setCurrentLang] = React.useState(lang);
   const [isCopied1, setIsCopied1] = React.useState(false);
   const [isCopied2, setIsCopied2] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState('readme');
   const [isDownloading, setIsDownloading] = React.useState(false);
   const [downloadError, setDownloadError] = React.useState<string | null>(null);
 
@@ -194,70 +193,13 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
           </div>
         </div>
 
-        {/* Content Tabs */}
+                {/* Content Tabs */}
         <div className="container mx-auto px-4 py-8 md:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Main Content Area */}
             <div className="lg:col-span-2 space-y-6">
-              <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
-                <div className="border-b bg-muted/40 px-4 flex">
-                  <button 
-                    onClick={() => setActiveTab('readme')}
-                    className={cn(
-                      "px-4 py-3 text-sm font-medium border-b-2 transition-colors",
-                      activeTab === 'readme' ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('skill.readme')}
-                  </button>
-                  <button 
-                    onClick={() => setActiveTab('files')}
-                    className={cn(
-                      "px-4 py-3 text-sm font-medium border-b-2 transition-colors",
-                      activeTab === 'files' ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {t('skill.files')}
-                  </button>
-                </div>
-                
-                <div className="p-6">
-                  {activeTab === 'readme' ? (
-                    <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:font-bold prose-a:text-primary">
-                      {/* In a real Astro app, this would be the rendered markdown content passed as children or a prop */}
-                      <h1>{skillData.title}</h1>
-                      <p>{skillData.description}</p>
-                      <h2>Overview</h2>
-                      <p>This is a mock readme representation. In the actual implementation, the markdown file from the storage directory would be parsed and injected here using Astro's content collection rendering capabilities.</p>
-                      <pre><code>{`{
-  "name": "${skillData.title?.toLowerCase().replace(/[^a-z0-9]/g, '_') || 'skill'}",
-  "arguments": {
-    "example": "value"
-  }
-}`}</code></pre>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      <div className="flex items-center p-2 rounded-md hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">meta.json</span>
-                        <span className="ml-auto text-xs text-muted-foreground">324 B</span>
-                      </div>
-                      <div className="flex items-center p-2 rounded-md hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 text-blue-400" />
-                        <span className="text-sm font-medium">{skillData.entry || 'skill.json'}</span>
-                        <span className="ml-auto text-xs text-muted-foreground">1.2 KB</span>
-                      </div>
-                      <div className="flex items-center p-2 rounded-md hover:bg-muted/50 cursor-pointer border border-transparent hover:border-border transition-colors">
-                        <FileCode className="h-4 w-4 mr-3 text-muted-foreground" />
-                        <span className="text-sm font-medium">README.md</span>
-                        <span className="ml-auto text-xs text-muted-foreground">2.4 KB</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
+              <FileViewer files={skillData.downloadFiles} emptyLabel={t('skill.files.empty')} />
             </div>
             
             {/* Sidebar */}
@@ -280,6 +222,20 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
                   <p className="text-xs text-red-500 mt-2">{downloadError}</p>
                 ) : null}
               </div>
+
+              {skillData.downloadFiles && skillData.downloadFiles.length > 0 && (
+                <div className="rounded-xl border bg-card shadow-sm p-5">
+                  <h3 className="font-bold mb-4">{t('skill.files')}</h3>
+                  <div className="space-y-2">
+                    {skillData.downloadFiles.map((file) => (
+                      <div key={file.path} className="flex items-center text-sm py-2 px-3 rounded-md hover:bg-muted/50 border border-transparent hover:border-border transition-colors">
+                        <FileCode className="h-4 w-4 mr-3 flex-shrink-0 text-muted-foreground" />
+                        <span className="truncate flex-1 font-medium" title={file.path}>{file.path}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
             
           </div>

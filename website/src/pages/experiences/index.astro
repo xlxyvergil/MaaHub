@@ -4,7 +4,7 @@ import { ExperiencesApp } from '../../components/ExperiencesApp';
 import { getCollection } from 'astro:content';
 
 const experiences = await getCollection('experiences');
-const experiencesData = experiences.map(e => e.data);
+const experiencesData = experiences.map((experience: typeof experiences[number]) => experience.data);
 ---
 
 <Layout title="MaaHub - AI Experiences">

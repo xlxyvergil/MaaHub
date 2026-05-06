@@ -4,7 +4,7 @@ import { SkillsApp } from '../../components/SkillsApp';
 import { getCollection } from 'astro:content';
 
 const skills = await getCollection('skills');
-const skillsData = skills.map(s => s.data);
+const skillsData = skills.map((skill: typeof skills[number]) => skill.data);
 ---
 
 <Layout title="MaaHub - AI Skills">

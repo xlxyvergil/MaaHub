@@ -7,9 +7,9 @@ const skills = await getCollection('skills');
 const pipelines = await getCollection('pipelines');
 const customs = await getCollection('customs');
 
-const skillsData = skills.map((skill) => skill.data);
-const pipelinesData = pipelines.map((pipeline) => pipeline.data);
-const customsData = customs.map((custom) => custom.data);
+const skillsData = skills.map((skill: typeof skills[number]) => skill.data);
+const pipelinesData = pipelines.map((pipeline: typeof pipelines[number]) => pipeline.data);
+const customsData = customs.map((custom: typeof customs[number]) => custom.data);
 ---
 
 <Layout title="MaaHub">
