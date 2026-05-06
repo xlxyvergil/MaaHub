@@ -1,0 +1,17 @@
+{
+  "name": "map-navigation",
+  "type": "custom",
+  "author": "xlxyvergil",
+  "description": "大地图导航 - 基于 OpenCV 图像匹配的章节关卡自动导航，支持所有章节",
+  "version": "1.0.0",
+  "language": "python",
+  "entry": "general_navigation_action.py",
+  "dependencies": [
+    "MaaFramework",
+    "opencv-python",
+    "numpy"
+  ],
+  "tags": ["fgo", "navigation", "opencv", "map"],
+  "repository": "https://github.com/xlxyvergil/MaaFgo",
+  "created_at": "2026-05-06"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "chaldea-import",
+  "type": "custom",
+  "author": "xlxyvergil",
+  "description": "Chaldea 队伍导入 - 从 Chaldea 分享链接/ID 获取队伍数据并转换为 BBC 配置文件",
+  "version": "1.0.0",
+  "language": "python",
+  "entry": "chaldea_import_action.py",
+  "dependencies": [
+    "MaaFramework"
+  ],
+  "tags": ["fgo", "chaldea", "import", "team"],
+  "repository": "https://github.com/xlxyvergil/MaaFgo",
+  "created_at": "2026-05-06"
+}
