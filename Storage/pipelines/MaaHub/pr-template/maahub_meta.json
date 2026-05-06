@@ -1,0 +1,17 @@
+{
+  "id": "MaaHub/pr-template",
+  "title": "PR Template",
+  "description": "A MaaHub-owned pull request template pipeline entry for contributors to copy and modify.",
+  "author": "MaaHub",
+  "tags": ["template", "pipeline"],
+  "createdAt": "2026-05-06",
+  "updatedAt": "2026-05-06",
+  "version": "0.0.1",
+  "mfw_version": "5.10.4",
+  "entry": "pipeline.json",
+  "readme": "./README.md",
+  "status": "beta",
+  "type": "pipeline",
+  "category": "template",
+  "externalTools": []
+}

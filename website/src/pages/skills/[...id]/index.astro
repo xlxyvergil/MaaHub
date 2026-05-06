@@ -1,15 +1,15 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { SkillDetailApp } from '../../../components/SkillDetailApp';
-import { getCollection } from 'astro:content';
 import { withDownloadFiles } from '../../../lib/downloadFiles';
+import { getAllSkills } from '../../../lib/skills';
 
 export async function getStaticPaths() {
-  const skills = await getCollection('skills');
-  return Promise.all(skills.map(async (skill: typeof skills[number]) => {
+  const skills = await getAllSkills();
+  return Promise.all(skills.map(async (skill) => {
     return {
-      params: { id: skill.data.id },
-      props: { skill: await withDownloadFiles(skill.data, 'skills') },
+      params: { id: skill.id },
+      props: { skill: await withDownloadFiles(skill, 'skills') },
     };
   }));
 }

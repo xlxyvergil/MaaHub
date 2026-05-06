@@ -1,0 +1,18 @@
+{
+  "id": "MaaHub/pr-template",
+  "title": "PR Template",
+  "description": "A MaaHub-owned pull request template custom entry for contributors to copy and modify.",
+  "author": "MaaHub",
+  "tags": ["template"],
+  "createdAt": "2026-05-06",
+  "updatedAt": "2026-05-06",
+  "version": "0.0.1",
+  "mfw_version": "5.10.4",
+  "entry": "main.py",
+  "readme": "./README.md",
+  "status": "beta",
+  "type": "custom",
+  "language": "python",
+  "runtime": "python 3.12.9",
+  "dependencies": []
+}

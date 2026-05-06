@@ -1,0 +1,22 @@
+{
+  "id": "MaaHub/pr-template",
+  "title": "PR Template",
+  "description": "A MaaHub-owned pull request template experience entry for contributors to copy and modify.",
+  "author": "MaaHub",
+  "tags": ["template"],
+  "createdAt": "2026-05-06",
+  "updatedAt": "2026-05-06",
+  "version": "0.0.1",
+  "mfw_version": "5.10.4",
+  "entry": "index.md",
+  "readme": "./index.md",
+  "chapters": [
+    { "title": "Overview", "path": "index.md" },
+    { "title": "Step By Step", "path": "chapter-01.md" }
+  ],
+  "status": "beta",
+  "type": "experience",
+  "category": "template",
+  "difficulty": "beginner",
+  "estimatedTime": "10min"
+}

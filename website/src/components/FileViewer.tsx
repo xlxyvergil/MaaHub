@@ -23,10 +23,13 @@ function sortFiles(files: DownloadFile[]) {
   return [...files].sort((a, b) => {
     const aName = a.path.split('/').pop()?.toLowerCase() ?? a.path.toLowerCase();
     const bName = b.path.split('/').pop()?.toLowerCase() ?? b.path.toLowerCase();
+    const aIsSkillDefinition = aName === 'skill.md';
+    const bIsSkillDefinition = bName === 'skill.md';
     const aIsReadme = README_CANDIDATES.has(aName);
     const bIsReadme = README_CANDIDATES.has(bName);
 
     if (aIsReadme !== bIsReadme) return aIsReadme ? -1 : 1;
+    if (aIsSkillDefinition !== bIsSkillDefinition) return aIsSkillDefinition ? -1 : 1;
     return a.path.localeCompare(b.path);
   });
 }

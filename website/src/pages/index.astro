@@ -2,12 +2,12 @@
 import Layout from '../layouts/Layout.astro';
 import { App } from '../components/App';
 import { getCollection } from 'astro:content';
+import { getAllSkills } from '../lib/skills';
 
-const skills = await getCollection('skills');
 const pipelines = await getCollection('pipelines');
 const customs = await getCollection('customs');
 
-const skillsData = skills.map((skill: typeof skills[number]) => skill.data);
+const skillsData = await getAllSkills();
 const pipelinesData = pipelines.map((pipeline: typeof pipelines[number]) => pipeline.data);
 const customsData = customs.map((custom: typeof customs[number]) => custom.data);
 ---

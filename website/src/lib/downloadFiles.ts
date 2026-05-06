@@ -1,11 +1,14 @@
 import { readdir, readFile } from 'node:fs/promises';
 import type { Dirent } from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 export type DownloadFile = {
   path: string;
   content: string;
 };
+
+const STORAGE_ROOT = fileURLToPath(new URL('../../../Storage', import.meta.url));
 
 export async function collectDownloadFiles(dirPath: string, relativePath = ''): Promise<DownloadFile[]> {
   const entries = await readdir(dirPath, { withFileTypes: true });
@@ -26,7 +29,7 @@ export async function collectDownloadFiles(dirPath: string, relativePath = ''): 
 
 export async function withDownloadFiles<T extends { id: string }>(item: T, storageType: string) {
   const [author, itemSlug] = item.id.split('/');
-  const itemDir = path.resolve('../Storage', storageType, author, itemSlug);
+  const itemDir = path.join(STORAGE_ROOT, storageType, author, itemSlug);
 
   return {
     ...item,

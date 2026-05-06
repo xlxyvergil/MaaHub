@@ -1,44 +1,6 @@
-以下的 markdown 是为修改此仓库的 AI 看的，如果你正在打算修改 `website`，请务必遵守 trellis 工作流与其他约定。
+以下的 markdown 是为修改此仓库的 AI 看的，如果你正在打算修改 `website`，请务必遵守。
 
 ```md
-<!-- TRELLIS:START -->
-
-# Trellis Instructions
-
-These instructions are for AI assistants working in this project.
-
-This project is managed by Trellis. The working knowledge you need lives under `.trellis/`:
-
-- `.trellis/workflow.md` — development phases, when to create tasks, skill routing
-- `.trellis/spec/` — package- and layer-scoped coding guidelines (read before writing code in a given layer)
-- `.trellis/workspace/` — per-developer journals and session traces
-- `.trellis/tasks/` — active and archived tasks (PRDs, research, jsonl context)
-
-If a Trellis command is available on your platform (e.g. `/trellis:finish-work`, `/trellis:continue`), prefer it over manual steps. Not every platform exposes every command.
-
-If you're using Codex or another agent-capable tool, additional project-scoped helpers may live in:
-
-- `.agents/skills/` — reusable Trellis skills
-- `.codex/agents/` — optional custom subagents
-
-## Subagents
-
-- ALWAYS wait for all subagents to complete before yielding.
-- Spawn subagents automatically when:
-  - Parallelizable work (e.g., install + verify, npm test + typecheck, multiple tasks from plan)
-  - Long-running or blocking tasks where a worker can run independently.
-  - Isolation for risky changes or checks
-
-Managed by Trellis. Edits outside this block are preserved; edits inside may be overwritten by a future `trellis update`.
-
-## grill-me
-
-In this project, trellis skill needs to be used with grill-me skill and needs to be loaded at the beginning.
-
-<!-- TRELLIS:END -->
-
-# 关于 MaaHub 与 MaaFramework
-
 MaaHub 是 为 MaaFramework(maafw) 开源框架构建的范式参考社区，有关 `pipeline`、`custom` 等为 MaaFramework 专属概念，详情参考 `\dev\instructions\maafw-guide`。
 
 简要而言，各模块指：

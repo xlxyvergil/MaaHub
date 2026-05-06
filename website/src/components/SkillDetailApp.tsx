@@ -17,6 +17,18 @@ type SkillDetailData = {
   tags?: string[];
   entry?: string;
   downloadFiles?: DownloadFile[];
+  skillName?: string;
+  whenToUse?: string[];
+  allowedTools?: string[];
+  argumentHint?: string;
+  disableModelInvocation?: boolean;
+  userInvocable?: boolean;
+  paths?: string[];
+  model?: string;
+  effort?: string;
+  context?: string[];
+  agent?: string;
+  shell?: string;
 };
 
 // In a real app, this data would come from the astro page props (fetched from getCollection)
@@ -79,13 +91,15 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
                   <div className="h-12 w-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-500">
                     <Puzzle className="h-6 w-6" />
                   </div>
-                  <h1 className="text-3xl font-bold tracking-tight">{skillData.title}</h1>
-                  <span className={cn(
-                    "ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
-                    skillData.status === 'stable' ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
-                  )}>
-                    {skillData.status}
-                  </span>
+                  <h1 className="text-3xl font-bold tracking-tight">{skillData.title || skillData.skillName}</h1>
+                  {skillData.status ? (
+                    <span className={cn(
+                      "ml-2 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                      skillData.status === 'stable' ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
+                    )}>
+                      {skillData.status}
+                    </span>
+                  ) : null}
                 </div>
                 
                 <p className="text-xl text-muted-foreground mb-4 max-w-3xl">
@@ -103,14 +117,16 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
                     <Clock className="h-4 w-4" />
                     <span>{t('common.updated')} {skillData.updatedAt}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <Tag className="h-4 w-4" />
-                    <span>v{skillData.version || '1.0.0'}</span>
-                  </div>
+                  {skillData.version ? (
+                    <div className="flex items-center gap-1">
+                      <Tag className="h-4 w-4" />
+                      <span>v{skillData.version}</span>
+                    </div>
+                  ) : null}
                 </div>
                 
                 <div className="flex flex-wrap gap-2">
-                  {skillData.tags?.map((tag: string) => (
+                  {(skillData.tags ?? skillData.allowedTools ?? []).map((tag: string) => (
                     <span key={tag} className="inline-flex items-center rounded-md bg-secondary px-2.5 py-0.5 text-xs font-semibold text-secondary-foreground">
                       {tag}
                     </span>

@@ -1,55 +1,29 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search, Filter, Star, Clock, Tag, ArrowRight, User } from 'lucide-react';
+import { Search, Filter, Clock, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
 
-// Mock data, in a real app this would come from Astro props via getCollection
-const mockSkills = [
-  {
-    id: "misteo/web-search",
-    title: "Web Search (Google)",
-    description: "Searches the web using Google Search API and returns parsed snippets.",
-    author: "misteo",
-    tags: ["search", "web", "google"],
-    status: "stable",
-    updatedAt: "2026-05-05",
-    version: "1.2.0",
-    downloads: 1250,
-  },
-  {
-    id: "alice/code-executor",
-    title: "Python Code Executor",
-    description: "Safely executes Python code in a sandboxed environment and returns the output.",
-    author: "alice",
-    tags: ["python", "execution", "sandbox"],
-    status: "beta",
-    updatedAt: "2026-05-04",
-    version: "2.0.1",
-    downloads: 850,
-  },
-  {
-    id: "misteo/demo-skill",
-    title: "Demo Skill",
-    description: "A simple demo skill to test the market.",
-    author: "misteo",
-    tags: ["demo", "test"],
-    status: "stable",
-    updatedAt: "2026-05-05",
-    version: "1.0.0",
-    downloads: 120,
-  }
-];
+type SkillListItem = {
+  id: string;
+  title?: string;
+  description?: string;
+  author?: string;
+  tags?: string[];
+  status?: string;
+  updatedAt?: string;
+  version?: string;
+  allowedTools?: string[];
+};
 
-export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 'en', initialSkills?: any[] }) {
+export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 'en', initialSkills?: SkillListItem[] }) {
   const t = (key: keyof typeof ui['zh']) => ui[lang][key];
   
   const [searchQuery, setSearchQuery] = useState("");
   const [activeStatus, setActiveStatus] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
 
-  // Fallback to mock data if no initialSkills provided (for dev without Astro)
-  const skillsData = initialSkills.length > 0 ? initialSkills : mockSkills;
+  const skillsData = initialSkills;
 
   const filteredSkills = skillsData.filter(skill => {
     const titleMatch = skill.title?.toLowerCase().includes(searchQuery.toLowerCase()) || false;
@@ -126,23 +100,27 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <span className={cn(
-                    "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
-                    skill.status === 'stable' ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
-                  )}>
-                    {skill.status}
-                  </span>
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Tag className="h-3 w-3" />
-                    <span>v{skill.version || '1.0.0'}</span>
-                  </div>
+                  {skill.status ? (
+                    <span className={cn(
+                      "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                      skill.status === 'stable' ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
+                    )}>
+                      {skill.status}
+                    </span>
+                  ) : <span />}
+                  {skill.version ? (
+                    <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <Tag className="h-3 w-3" />
+                      <span>v{skill.version}</span>
+                    </div>
+                  ) : null}
                 </div>
                 
                 <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-1">{skill.title}</h3>
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-4 h-10">{skill.description}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {skill.tags?.map((tag: string) => (
+                  {(skill.tags ?? skill.allowedTools ?? []).slice(0, 4).map((tag: string) => (
                     <span key={tag} className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-semibold transition-colors">
                       {tag}
                     </span>

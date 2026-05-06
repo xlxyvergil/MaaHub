@@ -56,7 +56,7 @@ export function App({ skillsData = [], pipelinesData = [], customsData = [] }: A
               {t('contribute.desc')}
             </p>
             <div className="flex justify-center gap-4">
-              <a href="https://github.com/MaaXYZ/MaaHub/blob/main/README.md" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-11 px-8">
+              <a href="https://github.com/MaaXYZ/MaaHub/blob/main/docs/zh/contributing.md" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-11 px-8">
                 {t('contribute.docs')}
               </a>
             </div>

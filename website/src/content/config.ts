@@ -4,6 +4,7 @@ import { glob } from 'astro/loaders';
 const skills = defineCollection({
   loader: glob({ pattern: "**/maahub_meta.json", base: "../Storage/skills" }),
   schema: z.object({
+    name: z.string().optional(),
     id: z.string(),
     title: z.string(),
     description: z.string(),
@@ -11,10 +12,10 @@ const skills = defineCollection({
     tags: z.array(z.string()).optional(),
     createdAt: z.string(),
     updatedAt: z.string(),
-    version: z.string().optional(),
     framework: z.string().optional(),
     entry: z.string().optional(),
     readme: z.string().optional(),
+    version: z.string().optional(),
     status: z.enum(['stable', 'beta', 'deprecated', 'experimental']).optional(),
     type: z.literal('skill'),
     category: z.string().optional(),
