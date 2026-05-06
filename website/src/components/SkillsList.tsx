@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Clock, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 
 type SkillListItem = {
   id: string;
@@ -91,7 +92,7 @@ export function SkillsList({ lang = 'zh', initialSkills = [] }: { lang?: 'zh' | 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredSkills.map((skill, i) => (
             <motion.a
-              href={`/skills/${skill.id}`}
+              href={sitePath(`/skills/${skill.id}`)}
               key={skill.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

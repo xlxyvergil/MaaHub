@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { ArrowLeft, Clock, Puzzle, Copy, Check, Terminal, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 import { FileViewer, type DownloadFile } from './FileViewer';
 import { DownloadSection } from './DownloadSection';
 
@@ -80,7 +81,7 @@ export function SkillDetailApp({ skillId, skillData, lang = 'zh' }: { skillId: s
         {/* Breadcrumb & Header Banner */}
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 py-8 md:px-8">
-            <a href="/skills" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 transition-colors">
+            <a href={sitePath('/skills')} className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t('common.back')}
             </a>

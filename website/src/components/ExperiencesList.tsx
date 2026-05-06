@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Star, Clock, BookOpen, Tag, ArrowRight, User } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 
 // Mock data, in a real app this would come from Astro props via getCollection
 const mockExperiences = [
@@ -95,7 +96,7 @@ export function ExperiencesList({ lang = 'zh', initialExperiences = [] }: { lang
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredExperiences.map((experience, i) => (
             <motion.a
-              href={`/experiences/${experience.id}`}
+              href={sitePath(`/experiences/${experience.id}`)}
               key={experience.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

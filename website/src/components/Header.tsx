@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Moon, Sun, Menu, Globe } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 import { ui } from '../i18n/utils';
 
 const Github = (props: any) => (
@@ -24,6 +25,7 @@ const Github = (props: any) => (
 export function Header({ lang = 'zh', toggleLang }: { lang?: 'zh' | 'en', toggleLang?: () => void }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [theme, setTheme] = React.useState<'light' | 'dark'>('dark');
+  const homeHref = sitePath();
 
   const t = (key: keyof typeof ui['zh']) => ui[lang][key];
 
@@ -74,16 +76,16 @@ export function Header({ lang = 'zh', toggleLang }: { lang?: 'zh' | 'en', toggle
     >
       <div className="container mx-auto flex h-16 items-center px-4 md:px-8">
         <div className="mr-4 flex">
-          <a href="/" className="mr-6 flex items-center space-x-2">
+          <a href={homeHref} className="mr-6 flex items-center space-x-2">
             <span className="font-bold sm:inline-block text-xl tracking-tight">
               <span className="text-primary">Maa</span>Hub
             </span>
           </a>
           <nav className="flex items-center space-x-6 text-sm font-medium hidden md:flex">
-            <a href="/skills" className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.skills')}</a>
-            <a href="/pipelines" className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.pipelines')}</a>
-            <a href="/customs" className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.customs')}</a>
-            <a href="/experiences" className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.experiences')}</a>
+            <a href={sitePath('/skills')} className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.skills')}</a>
+            <a href={sitePath('/pipelines')} className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.pipelines')}</a>
+            <a href={sitePath('/customs')} className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.customs')}</a>
+            <a href={sitePath('/experiences')} className="transition-colors hover:text-foreground/80 text-foreground/60">{t('nav.experiences')}</a>
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-4">

@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { ArrowLeft, BookOpen, Clock, Tag, FileText, List } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeHighlight from 'rehype-highlight';
@@ -145,7 +146,7 @@ export function ExperienceDetailApp({ experienceId, experienceData, lang = 'zh' 
         {/* Breadcrumb & Header Banner */}
         <div className="bg-background border-b">
           <div className="container mx-auto px-4 py-8 md:px-8">
-            <a href="/experiences" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 transition-colors">
+            <a href={sitePath('/experiences')} className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground mb-6 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t('common.back')}
             </a>

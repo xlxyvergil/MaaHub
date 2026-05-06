@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Star, Clock, Tag, ArrowRight, User, GitMerge } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 
 // Mock data, in a real app this would come from Astro props via getCollection
 const mockPipelines = [
@@ -95,7 +96,7 @@ export function PipelinesList({ lang = 'zh', initialPipelines = [] }: { lang?: '
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredPipelines.map((pipeline, i) => (
             <motion.a
-              href={`/pipelines/${pipeline.id}`}
+              href={sitePath(`/pipelines/${pipeline.id}`)}
               key={pipeline.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

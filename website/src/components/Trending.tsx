@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Clock, Shuffle } from 'lucide-react';
 import { ui } from '../i18n/utils';
+import { sitePath } from '../lib/routes';
 
 type ItemType = 'skill' | 'pipeline' | 'custom';
 
@@ -50,14 +51,14 @@ export function TrendingSection({ lang = 'zh', skillsData = [], pipelinesData = 
             <h2 className="text-3xl font-bold tracking-tight mb-2">{t('trending.title')}</h2>
             <p className="text-muted-foreground">{t('trending.desc')}</p>
           </div>
-          <a href="/search" className="text-sm font-medium text-primary hover:underline hidden sm:block">
+          <a href={sitePath('/search')} className="text-sm font-medium text-primary hover:underline hidden sm:block">
             {t('trending.viewAll')}
           </a>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
-            <a key={`${item.type}-${item.id}`} href={`/${typeRoutes[item.type]}/${item.id}`} className="flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
+            <a key={`${item.type}-${item.id}`} href={sitePath(`/${typeRoutes[item.type]}/${item.id}`)} className="flex flex-col rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:border-primary/50 hover:shadow-md">
               <div className="p-6 flex-1">
                 <div className="flex items-start justify-between mb-4">
                   <span className="inline-flex items-center rounded-md bg-secondary px-2.5 py-0.5 text-xs font-medium uppercase tracking-wider text-secondary-foreground">

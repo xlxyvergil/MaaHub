@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, Filter, Star, Clock, Tag, ArrowRight, User, Settings2 } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 
 // Mock data, in a real app this would come from Astro props via getCollection
 const mockCustoms = [
@@ -95,7 +96,7 @@ export function CustomsList({ lang = 'zh', initialCustoms = [] }: { lang?: 'zh' 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredCustoms.map((custom, i) => (
             <motion.a
-              href={`/customs/${custom.id}`}
+              href={sitePath(`/customs/${custom.id}`)}
               key={custom.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

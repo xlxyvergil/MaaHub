@@ -3,6 +3,7 @@ import { Header } from './Header';
 import { ArrowLeft, Clock, GitMerge, Tag } from 'lucide-react';
 import { ui } from '../i18n/utils';
 import { cn } from '../lib/utils';
+import { sitePath } from '../lib/routes';
 import { FileViewer, type DownloadFile } from './FileViewer';
 import { DownloadSection } from './DownloadSection';
 import { PipelineVisualizer } from './PipelineVisualizer';
@@ -129,7 +130,7 @@ export function PipelineDetailApp({ pipelineData, lang = 'zh' }: { pipelineId: s
       <main className="flex-1 bg-muted/10 pb-20">
         <div className="bg-background border-b">
           <div className={cn('container mx-auto px-4 md:px-8', isVisualMode ? 'py-5' : 'py-8')}>
-            <a href="/pipelines" className={cn('inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors', isVisualMode ? 'mb-4' : 'mb-6')}>
+            <a href={sitePath('/pipelines')} className={cn('inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors', isVisualMode ? 'mb-4' : 'mb-6')}>
               <ArrowLeft className="mr-2 h-4 w-4" />
               {t('common.back')}
             </a>
